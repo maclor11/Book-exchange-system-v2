@@ -18,10 +18,15 @@
 ## 📁 Struktura projektu
 
 BookExchangeSystem/
+
 ├── backend/ # Kod backendu – Spring Boot (Java)
+
 ├── frontend/ # Kod frontendowy – Vue.js
+
 ├── README.md # Ten plik
+
 └── .gitignore # Ignorowane pliki globalne
+
 
 
 ---
