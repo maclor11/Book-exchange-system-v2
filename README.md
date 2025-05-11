@@ -89,7 +89,7 @@ IDE: WebStorm
 Backend team
 Lokalizacja kodu: backend/
 Technologie: Java 17, Spring Boot, JPA
-IDE: IntelliJ IDEA
+IDE: Spring Tool Suite 4
 
 
 
