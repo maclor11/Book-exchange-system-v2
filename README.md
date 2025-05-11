@@ -10,7 +10,6 @@
 - [🚀 Uruchamianie projektu](#-uruchamianie-projektu)
 - [🛠 Technologie](#-technologie)
 - [🌐 Komunikacja front-back](#-komunikacja-front-back)
-- [📄 Pliki środowiskowe (.env)](#-pliki-środowiskowe-env)
 - [👥 Zespoły](#-zespoły)
 
 ---
@@ -42,14 +41,10 @@ npm run dev
 ```
 
 Domyślnie aplikacja frontendowa dostępna jest pod adresem:
-http://localhost:5173
+http://localhost:8081
 
 ### 🔹 Backend (Spring)
 
-```bash
-cd backend
-./gradlew bootRun
-```
 Backend uruchamia się domyślnie na:
 http://localhost:8080
 
@@ -65,25 +60,24 @@ http://localhost:8080
 
 Frontend komunikuje się z backendem poprzez REST API.
 
-Aby uniknąć problemów z CORS w środowisku deweloperskim, należy skonfigurować proxy w frontend/vite.config.js:
+Aby uniknąć problemów z CORS w środowisku deweloperskim, należy skonfigurować proxy w frontend/vue.config.js:
 
 ```js
-export default defineConfig({
-  server: {
+module.exports = {
+  devServer: {
+    port: 8081, // Ustawiamy port frontendowy na 8081
     proxy: {
-      '/api': 'http://localhost:8080',
+      '/api': {
+        target: 'http://localhost:8080',  // Proxy zapytań do backendu działającego na porcie 8080
+        changeOrigin: true,              // Ustawienie dla zmiany nagłówka Origin w zapytaniach
+        pathRewrite: {
+          '^/api': '',                  // Usuwamy '/api' z zapytania (opcjonalne, zależnie od struktury backendu)
+        },
+      },
     },
   },
-})
-```
-## 📄 Pliki środowiskowe (.env)
+};
 
-Pliki .env zawierają dane konfiguracyjne i nie powinny być commitowane do repozytorium.
-Zamiast tego, każdy zespół powinien przygotować plik .env.example.
-
-```bash
-# frontend/.env.example
-VITE_API_URL=http://localhost:8080/api
 ```
 ## 👥 Zespoły
 
