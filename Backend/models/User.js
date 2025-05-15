@@ -2,18 +2,23 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
-    username: { type: String, unique: true },
-    password: String,
-    email: String,
-    googleId: String, // Dodane pole googleId
-    profilePictureId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'File'
+    username: { 
+        type: String, 
+        required: true,
+        unique: true
     },
-    profilePictureUrl: String // Dodane pole dla URL zdjęcia z Google
+    password: { 
+        type: String, 
+        required: true
+    },
+    is_admin: { 
+        type: Boolean, 
+        default: false
+    }
 });
 
-UserSchema.pre('save', async function (next) {
+// Hash password before saving
+UserSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
     }
