@@ -28,6 +28,8 @@ app.use('/uploads', express.static(UPLOADS_PATH));
 app.use('/api', require('./routes/authRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/main', require('./routes/mainPageRoutes'));
+
 
 // Serwowanie frontendu
 const frontendPath = path.join(__dirname, '../Web-Frontend');

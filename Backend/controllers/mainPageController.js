@@ -1,45 +1,93 @@
-const User = require('../models/User');
-const UserBooks = require('../models/UserBook');
+﻿const User = require('../models/User');
+const UserBook = require('../models/UserBook');
+const mongoose = require('mongoose');
 
-exports.getOtherUsers = async (currentUserId) => {
-    return await User.find({ _id: { $ne: currentUserId } }).select('_id');
-};
-
-exports.getBooksByUserIds = async (userIds) => {
-    return await UserBook.find({ user_id: { $in: userIds } }).populate('book_id');
-};
-
-exports.browseBooksByTitle = (books, title) => {
-    const regex = new RegExp(title, 'i');
-    return books.filter(b => b.book_id && regex.test(b.book_id.title));
-};
-
-exports.getAllBooks = async (req, res) => {
+// Pobieranie listy użytkowników z paginacją i wyszukiwaniem
+exports.getUsers = async (req, res) => {
+    console.log("getUsers wywołane!");
     try {
-        const { title, condition, cover_type } = req.query;
-        const otherUsers = await this.getOtherUsers(req.user.userId);
-        const books = await this.getBooksByUserIds(otherUsers.map(u => u._id));
-        const filteredBooks = this.filterBooks(books, { title, condition, cover_type });
-        res.json(filteredBooks);
+        const search = req.query.search || '';
+        const searchPattern = new RegExp(search, 'i');
+        const query = search
+            ? { username: { $regex: searchPattern } }
+            : {};
+        // Pobierz użytkowników z paginacją
+        const users = await User.find(query).select('-password');
+
+        res.json({
+            users
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'B��d serwera' });
+        console.error('Błąd przy pobieraniu użytkowników:', error);
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
+};
+
+// Pobieranie wszystkich użytkowników poza jednym wskazanym ID
+exports.getOtherUsers = async (req, res) => {
+    try {
+        // Sprawdź poprawność id
+        const excludedId = req.user.id;
+        if (!mongoose.Types.ObjectId.isValid(excludedId)) {
+            return res.status(400).json({ error: 'Nieprawidłowy format ID użytkownika' });
+        }
+        const users = await User.find({ id: { $ne: excludedId } }).select('-password');
+        res.json(users);
+    } catch (error) {
+        console.error('Błąd przy pobieraniu użytkowników:', error);
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
+};
+
+exports.getBooksByOtherUsers = async (req, res) => {
+    try {
+        const excludedId = req.user.id;
+
+        if (!mongoose.Types.ObjectId.isValid(excludedId)) {
+            return res.status(400).json({ error: 'Nieprawidłowy format ID użytkownika' });
+        }
+
+        const userBooks = await UserBook.find({ id: { $ne: excludedId } })
+            .populate('book_id')
+            .select('book_id user_id');
+
+        // Grupowanie: user_id => [książki]
+        const booksByUser = {};
+        userBooks.forEach(entry => {
+            const uid = entry.user_id.toString();
+            if (!booksByUser[uid]) booksByUser[uid] = [];
+            booksByUser[uid].push(entry.book_id);
+        });
+
+        res.json(booksByUser);
+
+    } catch (error) {
+        console.error('Błąd przy pobieraniu książek innych użytkowników:', error);
+        res.status(500).json({ error: 'Błąd serwera' });
     }
 };
 
 
-exports.filterBooks = (books, filters) => {
-    const { title, condition, cover_type } = filters;
+exports.getAllBooks = async (req, res) => {
+    console.log("getAllBooks wywołane!");
+    try {
+        const userBooks = await UserBook.find()
+            .populate('book_id')
+            .select('book_id user_id');
 
-    return books.filter(b => {
-        const book = b.book_id;
-        if (!book) return false;
+        // Grupowanie: user_id => [książki]
+        const booksByUser = {};
+        userBooks.forEach(entry => {
+            const uid = entry.user_id.toString();
+            if (!booksByUser[uid]) booksByUser[uid] = [];
+            booksByUser[uid].push(entry.book_id);
+        });
 
-        const matchTitle = title ? new RegExp(title, 'i').test(book.title) : true;
-        const matchCondition = condition ? book.condition === condition : true;
-        const matchCover = cover_type ? book.cover_type === cover_type : true;
+        res.json(booksByUser);
 
-        return matchTitle && matchCondition && matchCover;
-    });
+    } catch (error) {
+        console.error('Błąd przy pobieraniu książek innych użytkowników:', error);
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
 };
 

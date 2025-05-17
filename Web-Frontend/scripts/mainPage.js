@@ -1,31 +1,31 @@
 ﻿
-function updateDateTime() {
-    const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const date = now.toLocaleDateString('pl-PL', options);
-    const time = now.toLocaleTimeString('pl-PL');
-
-    document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
-}
 
 // Funkcja do pobierania i wyświetlania książek z opcjonalnym filtrowaniem
-async function displayBooks(filters = {}) {
+/*async function displayOtherBooks() {
     try {
-        const queryParams = new URLSearchParams(filters).toString();
-        const response = await fetch(`http://localhost:3000/api/books${queryParams ? `?${queryParams}` : ''}`);
-
-        if (!response.ok) {
-            alert('Nie można pobrać książek.');
+        // Pobierz wszystkich użytkowników
+        const usersResponse = await fetch(`/api/users`);
+        if (!usersResponse.ok) {
+            alert('Nie można pobrać listy użytkowników.');
             return;
         }
 
-        const books = await response.json();
+        // Pobierz książki wszystkich użytkowników z wyjątkiem zalogowanego
+        const booksPromises = fetch(`/api/userbooks/others`);
 
+        const booksResponses = await Promise.all(booksPromises);
+        const allBooks = (await Promise.all(
+            booksResponses.map(response => response.json())
+        )).flat();
+
+        // Pobierz kontener półki
         const shelf = document.getElementById('shelf');
         shelf.innerHTML = ''; // Wyczyść półkę
 
-        books.forEach(({ book_id: book, user_id: user }) => {
-            const username = user?.username || 'Nieznany';
+        // Wyświetl książki na półce
+        allBooks.forEach(({ bookId, userId }) => {
+            const user = usersResponse.find(u => u._id === userId); // Znajdź właściciela książki
+            const username = user ? user.username : 'Nieznany';
 
             const bookContainer = document.createElement('div');
             bookContainer.classList.add('book-container');
@@ -35,14 +35,14 @@ async function displayBooks(filters = {}) {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong title="${book.title}">${book.title}</strong><br><small>Właściciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>Właściciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> <br><span title="${book.author}">${book.author}</span></p>
-                <p><strong>Stan:</strong> ${book.condition || 'Nieznany'}</p>
-                <p><strong>Okładka:</strong> ${book.cover_type || 'Nieznana'}</p>
+                <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Okładka:</strong> ${bookId.coverType || 'Nieznana'}</p>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -54,26 +54,129 @@ async function displayBooks(filters = {}) {
         console.error('Błąd podczas ładowania półki:', error);
         alert('Wystąpił błąd podczas ładowania półki.');
     }
+}*/
+function updateDateTime() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = now.toLocaleDateString('pl-PL', options);
+    const time = now.toLocaleTimeString('pl-PL');
+
+    document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
 }
+
+async function displayAllBooks() {
+    try {
+        const usersResponse = await fetch(`/api/main/users`);
+        if (!usersResponse.ok) {
+            alert('Nie można pobrać listy użytkowników.');
+            return;
+        }
+
+        const usersData = await usersResponse.json();
+        console.log("✅ Odebrani użytkownicy:", usersData);
+        const users = usersData.users || [];
+
+        console.log("📦 Pobieranie książek z /api/userbooks...");
+
+
+        const booksResponse = await fetch(`/api/main/userbooks`);
+
+
+        console.log("📥 booksResponse status:", booksResponse.status);
+        const contentType = booksResponse.headers.get("content-type");
+        console.log("📄 Content-Type:", contentType);
+
+        const rawText = await booksResponse.text();
+        console.log("📤 Surowa odpowiedź z /api/userbooks:", rawText);
+
+        if (!booksResponse.ok) {
+            alert('Nie można pobrać książek użytkowników.');
+            return;
+        }
+
+        let booksByUser;
+        try {
+            booksByUser = JSON.parse(rawText);
+            console.log("✅ Sparsowany JSON książek:", booksByUser);
+        } catch (parseErr) {
+            console.error("❌ Błąd parsowania JSON z /api/userbooks:", parseErr.message);
+            alert('Odpowiedź z serwera nie jest poprawnym JSON-em. Sprawdź konsolę.');
+            return;
+        }
+
+        const shelf = document.getElementById('shelf');
+        console.log("🧹 Czyścimy półkę...");
+        shelf.innerHTML = '';
+
+        console.log("🧱 Renderowanie książek na półce...");
+
+        for (const [userId, books] of Object.entries(booksByUser)) {
+            const user = users.find(u => u._id === userId);
+            const username = user ? user.username : 'Nieznany';
+
+            books.forEach(book => {
+                const bookContainer = document.createElement('div');
+                bookContainer.classList.add('book-container');
+
+                const bookDiv = document.createElement('div');
+                bookDiv.classList.add('book');
+
+                const bookFront = document.createElement('div');
+                bookFront.classList.add('book-face', 'book-front');
+                bookFront.innerHTML = `<strong title="${book.title}">${book.title}</strong><br><small>Właściciel: ${username}</small>`;
+
+                const bookBack = document.createElement('div');
+                bookBack.classList.add('book-face', 'book-back');
+                bookBack.innerHTML = `
+                    <p><strong>Autor:</strong> <br><span title="${book.author}">${book.author}</span></p>
+                    <p><strong>Stan:</strong> ${book.condition || 'Nieznany'}</p>
+                    <p><strong>Okładka:</strong> ${book.coverType || 'Nieznana'}</p>
+                `;
+
+                bookDiv.appendChild(bookFront);
+                bookDiv.appendChild(bookBack);
+                bookContainer.appendChild(bookDiv);
+                shelf.appendChild(bookContainer);
+            });
+        }
+
+        console.log("✅ Półka załadowana!");
+
+    } catch (error) {
+        console.error('❌ Błąd podczas ładowania półki:', error);
+        alert('Wystąpił błąd podczas ładowania półki.');
+    }
+}
+
+
+
+
+// Aktualizacja co sekundę
+setInterval(updateDateTime, 1000);
 
 // Funkcja wyszukiwania książek po tytule
 function searchBooks() {
-    const searchTerm = document.getElementById('searchInput').value.trim();
-    displayBooks({ title: searchTerm });
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const shelf = document.getElementById('shelf');
+    const books = shelf.getElementsByClassName('book-container');
+
+    Array.from(books).forEach(bookContainer => {
+        const bookTitle = bookContainer.querySelector('.book-front strong').textContent.toLowerCase();
+        if (bookTitle.includes(searchTerm)) {
+            bookContainer.style.display = ''; // Pokaż, jeśli pasuje
+        } else {
+            bookContainer.style.display = 'none'; // Ukryj, jeśli nie pasuje
+        }
+    });
 }
 
-// Przycisk powrotu do logowania
-function login() {
-    window.location.href = 'index.html';
-}
-
-// Inicjalizacja po załadowaniu strony
 window.onload = () => {
-    displayBooks();               // Załaduj wszystkie książki
-    updateDateTime();            // Pokaż datę/czas
-    setInterval(updateDateTime, 1000); // Aktualizuj datę co sekundę
+    displayAllBooks();
+    updateDateTime();
+    searchBooks();
+};
 
-    // Obsługa przewracania książek
+document.addEventListener('DOMContentLoaded', () => {
     const shelf = document.getElementById('shelf');
     shelf.addEventListener('click', (event) => {
         const book = event.target.closest('.book');
@@ -81,40 +184,6 @@ window.onload = () => {
             book.classList.toggle('flipped');
         }
     });
-
-    // Obsługa wyszukiwania w czasie rzeczywistym
-    document.getElementById('searchInput').addEventListener('input', searchBooks);
-};
-
-// scripts/index.js
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const user = await checkAuth();
-
-    if (user) {
-        document.querySelector('.logged-in').style.display = 'block';
-        document.querySelector('.logged-out').style.display = 'none';
-        document.getElementById('username').textContent = user.username;
-        displayBooks({ excludeOwn: true });
-    } else {
-        document.querySelector('.logged-in').style.display = 'none';
-        document.querySelector('.logged-out').style.display = 'block';
-        displayBooks();
-    }
-
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const title = e.target.value.trim();
-            const filters = { title };
-            if (user) filters.excludeOwn = true;
-            displayBooks(filters);
-        });
-    }
-
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', logout);
-    }
 });
+
 
