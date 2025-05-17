@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema({
     is_admin: { 
         type: Boolean, 
         default: false
+    },
+    profilePicturePath: {
+        type: String,
+        default: null
     }
 });
 

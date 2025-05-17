@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edycja profilu</title>
+	<!-- Style ogólne -->
+    <link rel="stylesheet" href="/styles/styles.css">
+    <!-- Style specyficzne dla strony profilu -->
+	<link rel="stylesheet" href="/styles/profilePage.css">
+    <script src="/scripts/edit.js"></script>
+    <script src="/scripts/auth.js"></script>
+</head> 
+<body class="editBody">
+    <!-- Panele modalne ze zmianami -->
+    <div id="editPanel" class="changePanel">
+        <form class="formEdit" id="formEditId">
+            <!-- Pola formularza będą dodawane bezpośrednio do formularza -->
+            
+            <div class="editContainerData">
+                <button type="submit" class="buttonZmien" id="saveButton">Zapisz</button>
+                <button type="button" class="buttonZmien" onclick="closePanel()">Anuluj</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="photoPanel" class="changePanel">
+        <form class="formEdit" id="formPhotoId" enctype="multipart/form-data">
+            <label for="photoInput">Wybierz zdjęcie profilowe:</label>
+            <input type="file" id="photoInput" accept="image/*" required><br>
+            <div class="editContainerData">
+                <button type="submit" class="buttonZmien" id="uploadButton">Prześlij</button>
+                <button type="button" class="buttonZmien" onclick="closePhotoPanel()">Anuluj</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Główna zawartość strony dla zalogowanych użytkowników -->
+    <div class="logged-in" style="display: none;">
+        <!-- Górna nawigacja -->
+        <div class="editContainerButtons">
+            <button class="buttonEditPage" onclick="open_mainpage()">Strona Główna</button>
+            <button class="buttonEditPage" onclick="logout()">Wyloguj</button>
+        </div>
+
+        <!-- Główny kontener z układem grid -->
+        <div class="profile-main-container">
+            <!-- Sekcja zdjęcia profilowego -->
+            <div class="editContainerPackImage">
+                <h1 class="h1Edit">Zdjęcie Profilowe</h1>
+                <img class="imgBorder" id="profileImage"
+                     src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg" 
+                     alt="Zdjęcie profilowe">
+                <div class="editContainerButtons">
+                    <button class="buttonEditPage" onclick="showPhotoPanel()">Zmień zdjęcie</button>
+                </div>
+            </div>
+
+            <!-- Sekcja danych użytkownika -->
+            <div class="editContainerPackDate">
+                <div class="user-data-section">
+                    <h2>Dane konta</h2>
+                    <div class="editContainerData">
+                        <div class="data-row">
+                            <div class="divEdit">Login:</div>
+                            <span class="spanEdit" id="login"></span>
+                        </div>
+                        <button class="buttonZmien" onclick="showPanel('login')">Zmień</button> 
+                    </div>
+                </div>
+                
+                <!-- Akcje konta -->
+                <div class="editContainerButtons2">
+                    <button class="buttonEditPage" onclick="showPanel('haslo')">Zmień hasło</button>
+                    <button class="buttonEditPage">Usuń konto</button>
+                    <button class="buttonEditPage admin-only" id="adminPanelBtn" style="display: none;" onclick="goToAdminPanel()">Panel Administratora</button>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <!-- Sekcja dla niezalogowanych użytkowników -->
+    <div class="logged-out">
+        <p>Zaloguj się aby uzyskać dostęp</p>
+        <a href="/login.html">Zaloguj</a>
+    </div>
+
+    <script src="/scripts/profilePage.js"></script>
+</body>                                             
+</html>

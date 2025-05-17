@@ -6,6 +6,8 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 
+uploads/
+
 # Ignorowanie folderów systemowych i IDE
 .DS_Store
 .idea/

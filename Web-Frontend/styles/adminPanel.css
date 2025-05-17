@@ -1,0 +1,190 @@
+/* Style dla panelu administratora */
+.adminBody {
+font-family: Arial, sans-serif;
+background-color: #f5f5f5;
+margin: 0;
+padding: 0;
+}
+.admin-panel-container {
+max-width: 1200px;
+margin: 20px auto;
+padding: 20px;
+background-color: #fff;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 5px;
+}
+.adminContainerButtons {
+display: flex;
+justify-content: flex-end;
+padding: 10px 20px;
+background-color: #333;
+}
+.buttonAdminPage {
+background-color: #4CAF50;
+color: white;
+border: none;
+padding: 10px 15px;
+margin-left: 10px;
+cursor: pointer;
+border-radius: 3px;
+transition: background-color 0.3s;
+}
+.buttonAdminPage:hover {
+background-color: #45a049;
+}
+/* Sekcja zarządzania użytkownikami */
+.user-management-section {
+margin-top: 20px;
+}
+.search-container {
+margin-bottom: 20px;
+display: flex;
+}
+.search-container input {
+flex: 1;
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 3px 0 0 3px;
+}
+.search-container button {
+padding: 10px 15px;
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 0 3px 3px 0;
+cursor: pointer;
+}
+/* Tabela użytkowników */
+.users-list-container {
+overflow-x: auto;
+}
+#usersTable {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 20px;
+}
+#usersTable th, #usersTable td {
+padding: 12px 15px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+#usersTable th {
+background-color: #f2f2f2;
+color: #333;
+}
+#usersTable tr:hover {
+background-color: #f5f5f5;
+}
+.user-actions button {
+margin-right: 5px;
+padding: 5px 10px;
+cursor: pointer;
+border: none;
+border-radius: 3px;
+}
+.edit-button {
+background-color: #2196F3;
+color: white;
+}
+.edit-button:hover {
+background-color: #0b7dda;
+}
+/* Paginacja */
+.pagination-container {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 20px;
+}
+.pagination-container button {
+padding: 8px 15px;
+margin: 0 5px;
+cursor: pointer;
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 3px;
+}
+.pagination-container button:disabled {
+background-color: #cccccc;
+cursor: not-allowed;
+}
+#pageInfo {
+margin: 0 15px;
+}
+/* Modal */
+.modal {
+display: none;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+background-color: #fefefe;
+margin: 10% auto;
+padding: 20px;
+border: 1px solid #888;
+width: 50%;
+border-radius: 5px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.close-button {
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+}
+.close-button:hover {
+color: black;
+}
+/* Formularz edycji */
+.form-group {
+margin-bottom: 15px;
+}
+.form-group label {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+}
+.form-group input[type="text"],
+.form-group input[type="password"] {
+width: 100%;
+padding: 8px;
+border: 1px solid #ddd;
+border-radius: 3px;
+}
+.button-group {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+.save-button {
+background-color: #4CAF50;
+color: white;
+border: none;
+padding: 10px 15px;
+cursor: pointer;
+border-radius: 3px;
+}
+.delete-button {
+background-color: #f44336;
+color: white;
+border: none;
+padding: 10px 15px;
+cursor: pointer;
+border-radius: 3px;
+}
+.cancel-button {
+background-color: #9e9e9e;
+color: white;
+border: none;
+padding: 10px 15px;
+cursor: pointer;
+border-radius: 3px;
+}
