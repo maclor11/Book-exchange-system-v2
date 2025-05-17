@@ -1,28 +1,109 @@
 <!-- index.html -->
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
-<head>
-    <!-- Tytuł strony głównej -->
-    <title>Strona Główna</title>
-	<link rel="stylesheet" href="/styles/styles.css">
-    <!-- Podpięcie skryptu odpowiedzialnego za autentykację -->
-    <script src="/scripts/auth.js"></script>
+<head>-->
+<!-- Tytuł strony głównej -->
+<!--<title>Strona Główna</title>
+<link rel="stylesheet" href="/styles/styles.css">-->
+<!-- Podpięcie skryptu odpowiedzialnego za autentykację -->
+<!--<script src="/scripts/auth.js"></script>
 </head>
-<body>
-    <!-- Sekcja widoczna TYLKO po zalogowaniu -->
-    <div class="logged-in" style="display: none;">
-        <!-- Dynamicznie wstawiana nazwa użytkownika -->
-        <h1>Witaj, <span id="username"></span>!</h1>
-        <!-- Przycisk wywołujący funkcję wylogowania -->
-        <button onclick="logout()">Wyloguj</button>
-    </div>
-    
-    <!-- Sekcja widoczna TYLKO dla niezalogowanych -->
-    <div class="logged-out">
-        <h1>Witaj gościu!</h1>
-        <!-- Linki do logowania i rejestracji -->
-        <a href="/login.html">Zaloguj się</a> | 
+<body>-->
+<!-- Sekcja widoczna TYLKO po zalogowaniu -->
+<!--<div class="logged-in" style="display: none;">-->
+<!-- Dynamicznie wstawiana nazwa użytkownika -->
+<!--<h1>Witaj, <span id="username"></span>!</h1>-->
+<!-- Przycisk wywołujący funkcję wylogowania -->
+<!--<button onclick="logout()">Wyloguj</button>
+</div>-->
+<!-- Sekcja widoczna TYLKO dla niezalogowanych -->
+<!--<div class="logged-out">
+    <h1>Witaj gościu!</h1>-->
+<!-- Linki do logowania i rejestracji -->
+<!--<a href="/login.html">Zaloguj się</a> |
         <a href="/register.html">Zarejestruj</a>
     </div>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Strona Główna</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/mainPage.css">
+    <script src="/scripts/auth.js"></script>
+    <script src="/scripts/mainPage.js"></script>
+</head>
+<body>
+    <!--    <div class="logged-in" style="display: none;">
+         Dynamicznie wstawiana nazwa użytkownika
+        <h1>Witaj, <span id="username"></span>!</h1>
+         Przycisk wywołujący funkcję wylogowania
+        <button onclick="logout()">Wyloguj</button>
+        </div>
+         Wyszukiwarka książek
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Szukaj książki..." />
+        </div>
+         Miejsce na półkę z książkami
+        <div id="shelf" class="shelf"></div>
+
+        <div class="navbar">
+            <div class="logo">
+                <img src="../../uploads/logo/Enchanted_Book.gif" alt="Logo" class="logo-image">
+                <span class="app-name">Bookswap</span>
+            </div>
+
+            <div id="currentDateTime"></div>
+        </div>
+
+        <div class="sections">
+            <div class="section" id="bookshelf">
+                <h2>WSZYSTKIE KSIĄŻKI</h2>
+                <div id="shelf"></div>
+            </div>
+        </div>
+         Sekcja dla niezalogowanego gościa
+        <div class="logged-out">
+            <h1>Witaj gościu!</h1>
+            <a href="/login.html">Zaloguj się</a> |
+            <a href="/register.html">Zarejestruj</a>
+        </div>
+        ////////////////////////////////////////-->
+    <div class="navbar">
+        <div class="logo">
+           <img src="../../uploads/logo/Enchanted_Book.gif" alt="Logo" class="logo-image">
+           <span class="app-name">Bookswap</span>
+        </div>
+
+        <div id="currentDateTime"></div>
+        <input id="searchInput" type="text" placeholder="Wyszukaj książkę..." onkeyup="searchBooks()">
+    </div>
+
+    <div class="logged-in" style="display: none;">
+        <h1>Witaj, <span id="username"></span>!</h1>
+        <button onclick="logout()">Wyloguj</button>
+    </div>
+
+    <!-- Widok dla gościa -->
+    <div class="logged-out">
+        <h1>Witaj gościu!</h1>
+        <a href="/login.html">Zaloguj się</a> |
+        <a href="/register.html">Zarejestruj</a>
+    </div>
+
+    <!-- Sekcja książek -->
+    <div class="sections">
+        <div class="section" id="bookshelf">
+            <h2>WSZYSTKIE KSIĄŻKI</h2>
+            <div id="shelf" class="shelf"></div>
+        </div>
+    </div>
+
+
+
 </body>
 </html>

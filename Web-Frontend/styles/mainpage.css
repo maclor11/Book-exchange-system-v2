@@ -375,6 +375,132 @@ button:hover {
     animation-duration: 0.25s;
 }
 
+.navbar {
+     background-color: #3498db;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+    .navbar input[type="text"] {
+        padding: 5px;
+        width: 300px;
+        border: none;
+        border-radius: 4px;
+    }
+
+
+    .navbar button:hover {
+        background-color: #555;
+    }
+
+
+.welcome-message {
+    font-size: 1.4em;
+    margin: 10px 0 20px;
+    color: #4CAF50;
+}
+
+#shelf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Karty zaczynaj� od lewej */
+    gap: 20px; /* Odst�py mi�dzy kartami */
+    padding: 40px; /* Wewn�trzny margines */
+    border: 1px solid #d4b483; /* Obramowanie sekcji */
+    border-radius: 12px; /* Zaokr�glenie */
+    background-color: #fff; /* T�o sekcji */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cie� */
+    max-height: 400px; /* Opcjonalne ograniczenie wysoko�ci */
+    overflow-y: auto; /* Pionowy przewijany pasek w przypadku du�ej liczby kart */
+}
+
+.book-container {
+    perspective: 1000px;
+}
+
+.book {
+    width: 100px;
+    height: 160px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+    .book.flipped {
+        transform: rotateY(180deg);
+    }
+
+.book-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.book-front {
+    background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+    border: 1px solid #b0a890;
+}
+
+.book-back {
+    background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
+    border: 1px solid #b0a890;
+    transform: rotateY(180deg);
+    font-size: 14px;
+    color: #3e281d;
+    text-align: center;
+    overflow: hidden; /* Zapobiega wyświetlaniu tekstu poza element */
+    text-overflow: ellipsis; /* Dodaje "..." */
+    white-space: nowrap; /* Zapobiega łamaniu tekstu */
+}
+
+.book-front strong {
+    font-size: 18px;
+    color: #3e281d;
+    white-space: nowrap; /* Zapobiega łamaniu tekstu */
+    overflow: hidden; /* Ukrywa nadmiar tekstu */
+    text-overflow: ellipsis; /* Dodaje "..." na końcu, jeśli tekst jest za długi */
+    max-width: 100%; /* Zapewnia, że tekst nie przekracza szerokości elementu */
+    text-align: center; /* Wyrównanie do środka */
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Odst�p mi�dzy logo a nazw� */
+}
+
+.logo-image {
+    width: 40px; /* Rozmiar logo */
+    height: 40px;
+    border-radius: 50%; /* Opcjonalne: zaokr�glenie kraw�dzi */
+}
+
+.app-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
 @keyframes zoomin {
     from {transform:scale(0)}
     to {transform:scale(1)}

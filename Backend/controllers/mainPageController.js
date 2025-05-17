@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const UserBooks = require('../models/UserBook');
 
 exports.getOtherUsers = async (currentUserId) => {
     return await User.find({ _id: { $ne: currentUserId } }).select('_id');
@@ -15,16 +16,17 @@ exports.browseBooksByTitle = (books, title) => {
 
 exports.getAllBooks = async (req, res) => {
     try {
-        const { title } = req.query;
+        const { title, condition, cover_type } = req.query;
         const otherUsers = await this.getOtherUsers(req.user.userId);
         const books = await this.getBooksByUserIds(otherUsers.map(u => u._id));
-        const filteredBooks = title ? this.browseBooksByTitle(books, title) : books;
+        const filteredBooks = this.filterBooks(books, { title, condition, cover_type });
         res.json(filteredBooks);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'B³¹d serwera' });
     }
 };
+
 
 exports.filterBooks = (books, filters) => {
     const { title, condition, cover_type } = filters;
