@@ -24,12 +24,14 @@ app.use((req, res, next) => {
 // Serwowanie plików statycznych uploads
 app.use('/uploads', express.static(UPLOADS_PATH));
 
-// Routy
+// Publiczne trasy - dostępne bez autoryzacji
+app.use('/api/public', require('./routes/publicRoutes'));
+
+// Trasy wymagające autoryzacji
 app.use('/api', require('./routes/authRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
-app.use('/api/main', require('./routes/mainPageRoutes'));
-
+app.use('/api/user', require('./routes/bookRoutes')); 
 
 // Serwowanie frontendu
 const frontendPath = path.join(__dirname, '../Web-Frontend');

@@ -1,1 +1,139 @@
-/* TODO style konkretnie dla strony profilePage*/
+/* Style specyficzne dla strony profilu */
+
+/* Layout głównego kontenera profilu */
+.profile-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* Sekcja zdjęcia profilowego */
+.profile-image-section {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Sekcja danych użytkownika */
+.profile-data-section {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Sekcja książek użytkownika */
+.user-books-section {
+    grid-column: 1 / -1;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.user-books-section h2 {
+    margin-bottom: 20px;
+}
+
+/* Style dla danych użytkownika */
+.user-data-section h2 {
+    margin-bottom: 20px;
+}
+
+.user-data-section .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.user-data-section .data-label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.user-data-section .data-value {
+    color: #34495e;
+}
+
+/* Przyciski akcji */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.action-buttons button.primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.action-buttons button.primary:hover {
+    background-color: #2980b9;
+}
+
+.action-buttons button.danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.action-buttons button.danger:hover {
+    background-color: #c0392b;
+}
+
+.action-buttons button.admin {
+    background-color: #9b59b6;
+    color: white;
+}
+
+.action-buttons button.admin:hover {
+    background-color: #8e44ad;
+}
+
+.action-buttons button.edit {
+    background-color: #f39c12;
+    color: white;
+    padding: 5px 15px;
+    width: auto;
+    font-size: 12px;
+}
+
+.action-buttons button.edit:hover {
+    background-color: #e67e22;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .profile-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .user-data-section .data-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .action-buttons {
+        margin-top: 15px;
+    }
+}

@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadLogin();
     await loadProfilePicture();
 	await checkAdminStatus();
+	
+    initAddBookModal();
+	loadUserBooks('userBookshelf');
 });
 
 function showPanel(type) {
