@@ -1,28 +1,100 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-    <!-- Tytuł strony głównej -->
+    <meta charset="UTF-8">
     <title>Strona Główna</title>
-	<link rel="stylesheet" href="/styles/styles.css">
-    <!-- Podpięcie skryptu odpowiedzialnego za autentykację -->
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/mainPage.css">
+    <link rel="stylesheet" href="/styles/bookshelf.css">
+    <link rel="stylesheet" href="/styles/bookModal.css">
     <script src="/scripts/auth.js"></script>
+    <script src="/scripts/bookshelf.js"></script>
+    <script src="/scripts/bookModal.js"></script>
+    <script src="/scripts/books.js"></script>
 </head>
 <body>
-    <!-- Sekcja widoczna TYLKO po zalogowaniu -->
-    <div class="logged-in" style="display: none;">
-        <!-- Dynamicznie wstawiana nazwa użytkownika -->
-        <h1>Witaj, <span id="username"></span>!</h1>
-        <!-- Przycisk wywołujący funkcję wylogowania -->
-        <button onclick="logout()">Wyloguj</button>
+    <div class="navbar">
+        <div class="logo">
+            <img src="assets/logo/Enchanted_Book.gif" alt="Logo" class="logo-image">
+            <span class="app-name">Bookswap</span>
+        </div>
+        <!-- Widoczne tylko dla niezalogowanych -->
+        <div class="logged-out nav-links">
+            <a href="/login.html" class="nav-button">Zaloguj się</a>
+            <a href="/register.html" class="nav-button">Zarejestruj</a>
+        </div>
+        <!-- Widoczne tylko dla zalogowanych -->
+        <div class="logged-in nav-links" style="display: none;">
+            <span id="username2" class="welcome-text"></span>
+            <a href="/profilePage.html" class="nav-button">Profil</a>
+            <button onclick="logout()" class="nav-button logout-button">Wyloguj</button>
+        </div>
     </div>
-    
-    <!-- Sekcja widoczna TYLKO dla niezalogowanych -->
-    <div class="logged-out">
-        <h1>Witaj gościu!</h1>
-        <!-- Linki do logowania i rejestracji -->
-        <a href="/login.html">Zaloguj się</a> | 
-        <a href="/register.html">Zarejestruj</a>
+
+    <div class="main-content">
+        <!-- Półka ze wszystkimi książkami - widoczna dla wszystkich -->
+        <div class="books-container">
+            <h1>Wszystkie dostępne książki</h1>
+            <div id="allBookshelf" class="bookshelf">
+                <!-- Tu będą wyświetlane wszystkie książki -->
+                <div class="loading-books">Ładowanie wszystkich książek...</div>
+            </div>
+        </div>
+
+        <!-- Widok dla zalogowanego użytkownika -->
+        <div class="logged-in books-container" style="display: none;">
+            <h1>Twoja półka z książkami</h1>
+            
+            <div class="add-book-section">
+                <button id="addBookBtn" class="add-book-button">Dodaj nową książkę</button>
+            </div>
+            
+            <div id="bookshelf" class="bookshelf">
+                <!-- Tu będą wyświetlane książki użytkownika -->
+                <div class="loading-books">Ładowanie Twoich książek...</div>
+            </div>
+        </div>
+        
+        <!-- Modal do dodawania książki -->
+        <div id="addBookModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h2>Dodaj nową książkę</h2>
+				<form id="addBookForm">
+					<div class="form-group">
+						<label for="title">Tytuł:</label>
+						<input type="text" id="title" name="title" required autocomplete="off">
+						<!-- Kontener na podpowiedzi dla tytułu -->
+						<div id="titleSuggestions" class="suggestions-container"></div>
+					</div>
+					<div class="form-group">
+						<label for="author">Autor:</label>
+						<input type="text" id="author" name="author" required autocomplete="off">
+						<!-- Kontener na podpowiedzi dla autora -->
+						<div id="authorSuggestions" class="suggestions-container"></div>
+					</div>
+					<div class="form-group">
+						<label for="condition">Stan książki:</label>
+						<select id="condition" name="condition">
+							<option value="Nowa">Nowa</option>
+							<option value="Bardzo dobry">Bardzo dobry</option>
+							<option value="Dobry">Dobry</option>
+							<option value="Średni">Średni</option>
+							<option value="Zły">Zły</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="cover_type">Typ okładki:</label>
+						<select id="cover_type" name="cover_type">
+							<option value="Miękka">Miękka</option>
+							<option value="Twarda">Twarda</option>
+							<option value="E-book">E-book</option>
+						</select>
+					</div>
+					<button type="submit">Dodaj książkę</button>
+				</form>
+			</div>
+		</div>
     </div>
 </body>
 </html>

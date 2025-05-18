@@ -10,6 +10,9 @@ const app = express();
 // Połączenie z bazą
 connectDB();
 
+// Ścieżka do folderu uploads z .env lub domyślna
+const UPLOADS_PATH = process.env.UPLOADS_PATH || path.join(__dirname, '../uploads');
+
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -18,9 +21,17 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routy
+// Serwowanie plików statycznych uploads
+app.use('/uploads', express.static(UPLOADS_PATH));
+
+// Publiczne trasy - dostępne bez autoryzacji
+app.use('/api/public', require('./routes/publicRoutes'));
+
+// Trasy wymagające autoryzacji
 app.use('/api', require('./routes/authRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/user', require('./routes/bookRoutes')); 
 
 // Serwowanie frontendu
 const frontendPath = path.join(__dirname, '../Web-Frontend');

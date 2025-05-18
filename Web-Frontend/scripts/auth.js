@@ -47,16 +47,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Dodaj obsługę błędów dla wszystkich API
 async function callApi(endpoint, options = {}) {
     try {
+        console.log(`Wywołanie API: ${endpoint}`, options);
         const response = await fetch(endpoint, {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                ...options.headers
+                ...options.headers,
+                'Authorization': localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : undefined
             }
         });
 
-        if (response.status === 401) logout();
+        console.log(`Status odpowiedzi: ${response.status}`);
+        
+        if (response.status === 401) {
+            console.log('Autoryzacja wygasła lub jest nieprawidłowa');
+            logout();
+        }
+        
         return response;
     } catch (error) {
         console.error('Błąd API:', error);
@@ -66,83 +73,70 @@ async function callApi(endpoint, options = {}) {
 
 // Aktualizacja funkcji formularza
 document.addEventListener('submit', async (e) => {
-    if (e.target.matches('form')) {
+    const form = e.target;
+    
+    // Sprawdź czy to formularz logowania lub rejestracji
+    if (form.matches('#loginForm, #registerForm')) {
         e.preventDefault();
+        
+        // Pokaż stan ładowania
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = form.id === 'loginForm' ? 'Logowanie...' : 'Rejestracja...';
 
-        const formData = new FormData(e.target);
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await callApi(`/api${e.target.getAttribute('action')}`, {
+            let endpoint = '';
+            if (form.id === 'loginForm') {
+                endpoint = '/api/login';
+            } else if (form.id === 'registerForm') {
+                endpoint = '/api/register';
+            }
+            
+            console.log(`Wysyłanie formularza do ${endpoint}`, data);
+            
+            const response = await callApi(endpoint, {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
 
             if (response.ok) {
-                if (e.target.id === 'loginForm') {
+                if (form.id === 'loginForm') {
                     const { token } = await response.json();
                     localStorage.setItem('token', token);
-                    window.location.href = '/mainpage.html';
-                } else if (e.target.id === 'registerForm') {
-                    window.location.href = '/login.html'
-                } else {
-                    window.location.reload();
+                    window.location.href = '/';
+                } else if (form.id === 'registerForm') {
+                    alert('Rejestracja przebiegła pomyślnie. Możesz się teraz zalogować.');
+                    window.location.href = '/login.html';
                 }
             } else {
-                const error = await response.json();
-                alert(error.error || 'Nieznany błąd');
+                try {
+                    const errorText = await response.text();
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        alert(errorData.error || 'Nieznany błąd');
+                    } catch (jsonError) {
+                        console.error('Odpowiedź nie jest poprawnym JSON:', errorText);
+                        alert('Wystąpił błąd podczas przetwarzania odpowiedzi.');
+                    }
+                } catch (textError) {
+                    console.error('Nie można odczytać treści odpowiedzi:', textError);
+                    alert('Nieznany błąd podczas przetwarzania odpowiedzi.');
+                }
             }
         } catch (error) {
-            alert('Problem z połączeniem');
+            console.error('Błąd podczas wysyłania formularza:', error);
+            alert('Problem z połączeniem z serwerem.');
+        } finally {
+            // Przywróć stan przycisku
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
         }
     }
 });
-
-// Funkcja obsługująca odpowiedź z Google Sign-In
-function handleGoogleSignIn(response) {
-    try {
-        console.log("Google Sign-In zakończony pomyślnie", response);
-        
-        if (!response || !response.credential) {
-            console.error("Brak poświadczenia w odpowiedzi Google:", response);
-            alert("Nieprawidłowa odpowiedź z Google. Brak poświadczenia.");
-            return;
-        }
-        
-        const credential = response.credential;
-        console.log("Poświadczenie Google otrzymane:", credential.substring(0, 20) + "...");
-        
-        // Wysyłamy token ID do naszego API
-        fetch('/api/auth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: credential })
-        })
-        .then(response => {
-            console.log("Status odpowiedzi API:", response.status);
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(errorData.error || 'Problem z autoryzacją Google');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Logowanie Google zakończone sukcesem:", data);
-            localStorage.setItem('token', data.token);
-            window.location.href = '/mainpage.html';
-        })
-        .catch(error => {
-            console.error('Google Sign-In error:', error);
-            alert('Problem z logowaniem przez Google: ' + error.message);
-        });
-    } catch (error) {
-        console.error('Google Sign-In error:', error);
-        alert('Problem z logowaniem przez Google: ' + error.message);
-    }
-}
 
 function logout() {
     localStorage.removeItem('token');

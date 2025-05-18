@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel Administratora</title>
+    <!-- Style ogólne -->
+    <link rel="stylesheet" href="/styles/styles.css">
+    <!-- Style specyficzne dla strony panelu administratora -->
+    <link rel="stylesheet" href="/styles/adminPanel.css">
+    <script src="/scripts/auth.js"></script>
+</head> 
+<body class="adminBody">
+    <!-- Główna zawartość strony dla zalogowanych adminów -->
+    <div class="logged-in admin-only" style="display: none;">
+        <!-- Górna nawigacja -->
+        <div class="adminContainerButtons">
+            <button class="buttonAdminPage" onclick="goToProfilePage()">Mój Profil</button>
+            <button class="buttonAdminPage" onclick="logout()">Wyloguj</button>
+        </div>
+
+        <div class="admin-panel-container">
+            <h1>Panel Administratora</h1>
+            
+            <div class="user-management-section">
+                <h2>Zarządzanie Użytkownikami</h2>
+                
+                <div class="search-container">
+                    <input type="text" id="userSearchInput" placeholder="Szukaj użytkownika...">
+                    <button onclick="searchUsers()">Szukaj</button>
+                </div>
+                
+                <div class="users-list-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Login</th>
+                                <th>Administrator</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Lista użytkowników będzie dodana przez JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination-container">
+                    <button id="prevPage" onclick="loadPreviousPage()" disabled>Poprzednia</button>
+                    <span id="pageInfo">Strona 1</span>
+                    <button id="nextPage" onclick="loadNextPage()">Następna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modalne okno edycji użytkownika -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditUserModal()">&times;</span>
+            <h2>Edytuj Użytkownika</h2>
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId">
+                
+                <div class="form-group">
+                    <label for="editUsername">Login:</label>
+                    <input type="text" id="editUsername" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editIsAdmin">Administrator:</label>
+                    <input type="checkbox" id="editIsAdmin">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editPassword">Nowe hasło (opcjonalnie):</label>
+                    <input type="password" id="editPassword">
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="save-button">Zapisz zmiany</button>
+                    <button type="button" class="delete-button" onclick="confirmDeleteUser()">Usuń użytkownika</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modalne okno potwierdzenia usunięcia -->
+    <div id="confirmDeleteModal" class="modal">
+        <div class="modal-content">
+            <h2>Potwierdź usunięcie</h2>
+            <p>Czy na pewno chcesz usunąć użytkownika? Ta operacja jest nieodwracalna.</p>
+            <div class="button-group">
+                <button class="delete-button" onclick="deleteUser()">Usuń</button>
+                <button class="cancel-button" onclick="closeConfirmDeleteModal()">Anuluj</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcja dla niezalogowanych użytkowników -->
+    <div class="logged-out">
+        <p>Zaloguj się aby uzyskać dostęp</p>
+        <a href="/login.html">Zaloguj</a>
+    </div>
+
+    <!-- Sekcja dla zalogowanych użytkowników bez uprawnień administratora -->
+    <div class="logged-in non-admin" style="display: none;">
+        <h1>Brak dostępu</h1>
+        <p>Nie masz uprawnień do wyświetlenia tej strony.</p>
+        <a href="/profilePage.html">Wróć do profilu</a>
+    </div>
+
+    <script src="/scripts/adminPanel.js"></script>
+</body>                                             
+</html>
