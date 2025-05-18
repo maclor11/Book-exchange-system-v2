@@ -73,42 +73,31 @@ async function displayAllBooks() {
         }
 
         const usersData = await usersResponse.json();
-        console.log("✅ Odebrani użytkownicy:", usersData);
         const users = usersData.users || [];
+        console.log("👥 Użytkownicy:", users);
 
-        console.log("📦 Pobieranie książek z /api/userbooks...");
-
-
-        const booksResponse = await fetch(`/api/main/userbooks`);
-
-
-        console.log("📥 booksResponse status:", booksResponse.status);
-        const contentType = booksResponse.headers.get("content-type");
-        console.log("📄 Content-Type:", contentType);
-
-        const rawText = await booksResponse.text();
-        console.log("📤 Surowa odpowiedź z /api/userbooks:", rawText);
-
+        console.log("📚 Pobieranie książek...");
+        const booksResponse = await fetch(`/api/main/user-books`);
         if (!booksResponse.ok) {
-            alert('Nie można pobrać książek użytkowników.');
-            return;
+            throw new Error('Nie można pobrać książek.');
         }
 
-        let booksByUser;
-        try {
-            booksByUser = JSON.parse(rawText);
-            console.log("✅ Sparsowany JSON książek:", booksByUser);
-        } catch (parseErr) {
-            console.error("❌ Błąd parsowania JSON z /api/userbooks:", parseErr.message);
-            alert('Odpowiedź z serwera nie jest poprawnym JSON-em. Sprawdź konsolę.');
-            return;
-        }
+        const userBooks = await booksResponse.json();
+        console.log("📦 Odebrane książki:", userBooks);
+
+        // Grupowanie książek po użytkowniku
+        const booksByUser = {};
+        userBooks.forEach(entry => {
+            const userId = entry.userId._id;
+            const book = entry.book_id;
+            if (!booksByUser[userId]) {
+                booksByUser[userId] = [];
+            }
+            booksByUser[userId].push(book);
+        });
 
         const shelf = document.getElementById('shelf');
-        console.log("🧹 Czyścimy półkę...");
         shelf.innerHTML = '';
-
-        console.log("🧱 Renderowanie książek na półce...");
 
         for (const [userId, books] of Object.entries(booksByUser)) {
             const user = users.find(u => u._id === userId);
@@ -140,13 +129,14 @@ async function displayAllBooks() {
             });
         }
 
-        console.log("✅ Półka załadowana!");
+        console.log("✅ Książki załadowane!");
 
     } catch (error) {
         console.error('❌ Błąd podczas ładowania półki:', error);
-        alert('Wystąpił błąd podczas ładowania półki.');
+        alert('Wystąpił błąd podczas ładowania książek.');
     }
 }
+
 
 
 

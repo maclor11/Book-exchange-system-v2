@@ -3,10 +3,12 @@ const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const mainPageController = require('../controllers/mainPageController');
 
+router.get('/user-books', mainPageController.getAllBooks);
 router.get('/users', mainPageController.getUsers);
+
 router.get('/users/others', mainPageController.getOtherUsers);
-router.get('/userbooks/:id', mainPageController.getBooksByOtherUsers);
-router.get('/userbooks', mainPageController.getAllBooks);
+router.get('/user-books/:id', mainPageController.getBooksByOtherUsers);
+
 
 
 module.exports = router;
