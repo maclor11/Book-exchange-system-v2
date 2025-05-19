@@ -39,6 +39,20 @@
     margin-bottom: 20px;
 }
 
+/* Sekcja listy życzeń użytkownika */
+.user-wishlist-section {
+    grid-column: 1 / -1;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+    .user-wishlist-section h2 {
+        margin-bottom: 20px;
+    }
+
 /* Style dla danych użytkownika */
 .user-data-section h2 {
     margin-bottom: 20px;
