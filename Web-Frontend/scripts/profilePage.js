@@ -61,6 +61,7 @@
 	await checkAdminStatus();
 	
     initAddBookModal();
+    initAddWishlistModal();
 	loadUserBooks('userBookshelf');
     loadUserWishlist('userWishlist');
 });

@@ -28,7 +28,7 @@ exports.getUserWishlist = async (req, res) => {
 // Dodaj ksi¹¿kê do listy ¿yczeñ u¿ytkownika
 exports.addBookToWishlist = async (req, res) => {
     try {
-        const { title, author } = req.body;
+        const { title, author, condition, cover_type } = req.body;
         
         // SprawdŸ, czy ksi¹¿ka ju¿ istnieje w bazie
         let book = await Book.findOne({ 
@@ -40,7 +40,9 @@ exports.addBookToWishlist = async (req, res) => {
         if (!book) {
             book = new Book({
                 title,
-                author
+                author,         
+                condition,
+                cover_type
             });
             await book.save();
         }
