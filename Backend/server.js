@@ -32,6 +32,9 @@ app.use('/api', require('./routes/authRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/user', require('./routes/bookRoutes')); 
+app.use('/api/user', require('./routes/wishlistRoutes')); 
+
+
 
 // Serwowanie frontendu
 const frontendPath = path.join(__dirname, '../Web-Frontend');

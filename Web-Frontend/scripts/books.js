@@ -8,8 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token) {
         // Inicjalizacja modalu do dodawania książek
         initAddBookModal();
+
+        // Inicjalizacja modelu do dodawania ksiazek do listy zyczen
+        initAddWishlistModal();
         
         // Pobierz książki po załadowaniu strony
         loadUserBooks();
+
+        // Pobierz listę życzeń po załadowaniu strony
+        loadUserWishlist();
     }
 });

@@ -39,18 +39,18 @@
     color: #34495e;
 }
 
-.form-group {
+.form-group-bookshelf {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.form-group-bookshelf label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     color: #2c3e50;
 }
 
-.form-group select {
+.form-group-bookshelf select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -59,6 +59,27 @@
     font-size: 16px;
     background-color: white;
 }
+
+.form-group-wishlist {
+    margin-bottom: 15px;
+}
+
+    .form-group-wishlist label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .form-group-wishlist select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 16px;
+        background-color: white;
+    }
 
 .suggestions-container {
     position: relative;

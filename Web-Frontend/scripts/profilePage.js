@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+﻿document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
 
@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await checkAdminStatus();
 	
     initAddBookModal();
+    initAddWishlistModal();
 	loadUserBooks('userBookshelf');
+    loadUserWishlist('userWishlist');
 });
 
 function showPanel(type) {

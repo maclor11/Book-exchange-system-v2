@@ -1,0 +1,114 @@
+/* wishlist.css - Style dla pó³ek z ksi¹¿kami */
+
+/* Wspólne style dla kontenerów z ksi¹¿kami */
+.wishlist-container {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.add-wishlist-section {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.add-wishlist-button {
+    width: auto;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+    .add-wishlist-button:hover {
+        background-color: #219653;
+    }
+
+.wishlist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.book-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+    .book-card:hover {
+        transform: translateY(-5px);
+    }
+
+.book-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.book-author {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.book-details {
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+    .book-details div {
+        margin-bottom: 2px;
+    }
+
+.loading-books {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    color: #7f8c8d;
+}
+
+.no-books {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+    color: #7f8c8d;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    color: #e74c3c;
+}
+
+/* Compact version for profile page */
+.wishlist.compact {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+    .wishlist.compact .book-card {
+        padding: 10px;
+    }
+
+    .wishlist.compact .book-title {
+        font-size: 14px;
+    }
+
+    .wishlist.compact .book-author {
+        font-size: 12px;
+    }
+
+    .wishlist.compact .book-details {
+        font-size: 11px;
+    }

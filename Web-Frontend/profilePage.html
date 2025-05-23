@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="/styles/bookshelf.css">
     <!-- Style modalu z książkami -->
     <link rel="stylesheet" href="/styles/bookModal.css">
+    <!-- Style listy życzeń -->
+    <link rel="stylesheet" href="/styles/wishlist.css">
     <!-- Skrypty -->
     <script src="/scripts/auth.js"></script>
     <script src="/scripts/bookshelf.js"></script>
     <script src="/scripts/bookModal.js"></script>
     <script src="/scripts/profilePage.js"></script>
-</head> 
+    <script src="/scripts/wishlist.js"></script>
+</head>
 <body class="full-width-container">
     <!-- Navbar -->
     <div class="navbar">
@@ -40,7 +43,7 @@
     <div id="editPanel" class="changePanel">
         <form class="formEdit" id="formEditId">
             <!-- Pola formularza będą dodawane bezpośrednio do formularza -->
-            
+
             <div class="editContainerData">
                 <button type="submit" class="buttonZmien" id="saveButton">Zapisz</button>
                 <button type="button" class="buttonZmien" onclick="closePanel()">Anuluj</button>
@@ -65,19 +68,19 @@
             <span class="close">&times;</span>
             <h2>Dodaj nową książkę</h2>
             <form id="addBookForm">
-                <div class="form-group">
+                <div class="form-group-bookshelf">
                     <label for="title">Tytuł:</label>
                     <input type="text" id="title" name="title" required autocomplete="off">
                     <!-- Kontener na podpowiedzi dla tytułu -->
                     <div id="titleSuggestions" class="suggestions-container"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group-bookshelf">
                     <label for="author">Autor:</label>
                     <input type="text" id="author" name="author" required autocomplete="off">
                     <!-- Kontener na podpowiedzi dla autora -->
                     <div id="authorSuggestions" class="suggestions-container"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group-bookshelf">
                     <label for="condition">Stan książki:</label>
                     <select id="condition" name="condition">
                         <option value="Nowa">Nowa</option>
@@ -87,7 +90,7 @@
                         <option value="Zły">Zły</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group-bookshelf">
                     <label for="cover_type">Typ okładki:</label>
                     <select id="cover_type" name="cover_type">
                         <option value="Miękka">Miękka</option>
@@ -96,6 +99,47 @@
                     </select>
                 </div>
                 <button type="submit">Dodaj książkę</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal do dodawania książki do listy życzeń -->
+    <div id="addWishlistModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Dodaj nową książkę do listy</h2>
+            <form id="addWishlistForm">
+                <div class="form-group-wishlist">
+                    <label for="title">Tytuł:</label>
+                    <input type="text" id="titleW" name="title" required autocomplete="off">
+                    <!-- Kontener na podpowiedzi dla tytułu -->
+                    <div id="titleSuggestions" class="suggestions-container"></div>
+                </div>
+                <div class="form-group-wishlist">
+                    <label for="author">Autor:</label>
+                    <input type="text" id="authorW" name="author" required autocomplete="off">
+                    <!-- Kontener na podpowiedzi dla autora -->
+                    <div id="authorSuggestions" class="suggestions-container"></div>
+                </div>
+                <div class="form-group-wishlist">
+                    <label for="condition">Stan książki:</label>
+                    <select id="conditionW" name="condition">
+                        <option value="Nowa">Nowa</option>
+                        <option value="Bardzo dobry">Bardzo dobry</option>
+                        <option value="Dobry">Dobry</option>
+                        <option value="Średni">Średni</option>
+                        <option value="Zły">Zły</option>
+                    </select>
+                </div>
+                <div class="form-group-wishlist">
+                    <label for="cover_type">Typ okładki:</label>
+                    <select id="cover_typeW" name="cover_type">
+                        <option value="Miękka">Miękka</option>
+                        <option value="Twarda">Twarda</option>
+                        <option value="E-book">E-book</option>
+                    </select>
+                </div>
+                <button type="submit">Dodaj książkę do listy</button>
             </form>
         </div>
     </div>
@@ -110,7 +154,7 @@
                 <div class="profile-image-section">
                     <h1 class="h1Edit">Zdjęcie Profilowe</h1>
                     <img class="imgBorder" id="profileImage"
-                         src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg" 
+                         src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg"
                          alt="Zdjęcie profilowe">
                     <div class="action-buttons">
                         <button class="primary" onclick="showPhotoPanel()">Zmień zdjęcie</button>
@@ -127,7 +171,7 @@
                             <button class="action-buttons edit" onclick="showPanel('login')">Zmień</button>
                         </div>
                     </div>
-                    
+
                     <!-- Akcje konta -->
                     <div class="action-buttons">
                         <button class="primary" onclick="showPanel('haslo')">Zmień hasło</button>
@@ -140,14 +184,27 @@
             <!-- Sekcja książek użytkownika -->
             <div class="user-books-section">
                 <h2>Twoja półka z książkami</h2>
-                
+
                 <div class="add-book-section">
                     <button id="addBookBtn" class="add-book-button">Dodaj nową książkę</button>
                 </div>
-                
+
                 <div id="userBookshelf" class="bookshelf">
                     <!-- Tu będą wyświetlane książki użytkownika -->
                     <div class="loading-books">Ładowanie Twoich książek...</div>
+                </div>
+            </div>
+
+            <div class="user-wishlist-section">
+                <h2>Twoja lista życzeń</h2>
+
+                <div class="add-wishlist-section">
+                    <button id="addWishlistBtn" class="add-wishlist-button">Dodaj nową książkę do listy</button>
+                </div>
+
+                <div id="userWishlist" class="wishlist">
+                    <!-- Tu będą wyświetlane książki użytkownika -->
+                    <div class="loading-wishlists">Ładowanie Twoich książek...</div>
                 </div>
             </div>
         </div>
@@ -158,7 +215,5 @@
             <a href="/login.html" class="nav-button">Zaloguj się</a>
         </div>
     </div>
-
-    <script src="/scripts/profilePage.js"></script>
-</body>                                             
+</body>
 </html>
