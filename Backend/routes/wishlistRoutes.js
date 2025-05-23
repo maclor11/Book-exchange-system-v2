@@ -4,7 +4,7 @@ const { getUserWishlist, addBookToWishlist, removeBookFromWishlist,  } = require
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Wszystkie trasy wymagaj¹ uwierzytelnienia
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 // Pobierz wszystkie ksi¹¿ki u¿ytkownika
 router.get('/wishlists', getUserWishlist);

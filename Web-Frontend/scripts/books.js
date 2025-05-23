@@ -16,6 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadUserBooks();
 
         // Pobierz listę życzeń po załadowaniu strony
-        loadWishlist();
+        loadUserWishlist();
     }
 });

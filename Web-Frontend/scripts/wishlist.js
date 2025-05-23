@@ -1,13 +1,13 @@
-// wishlist.js - Obs³uga wyœwietlania listy ¿yczeñ
+ï»¿// wishlist.js - ObsÅ‚uga wyÅ›wietlania listy Å¼yczeÅ„
 
-// Funkcja do pobierania listy ¿yczeñ
+// Funkcja do pobierania listy Å¼yczeÅ„
 async function loadUserWishlist(containerId = 'wishlist') {
     const wishlist = document.getElementById(containerId);
     
     if (!wishlist) return;
     
-    // Wyœwietl komunikat o ³adowaniu
-    wishlist.innerHTML = '<div class="loading-wishlist">£adowanie Twoich ksi¹¿ek...</div>';
+    // WyÅ›wietl komunikat o Å‚adowaniu
+    wishlist.innerHTML = '<div class="loading-wishlist">Åadowanie Twoich ksiÄ…Å¼ek...</div>';
     
     try {
         const response = await callApi('/api/user/wishlists', {
@@ -17,15 +17,15 @@ async function loadUserWishlist(containerId = 'wishlist') {
         if (response.ok) {
             const books = await response.json();
             
-            // Wyczyœæ pó³kê
+            // WyczyÅ›Ä‡ pÃ³Å‚kÄ™
             wishlist.innerHTML = '';
             
             if (books.length === 0) {
-                wishlist.innerHTML = '<div class="no-books">Nie masz jeszcze ¿adnych ksi¹¿ek na liœcie. Dodaj swoj¹ pierwsz¹ ksi¹¿kê!</div>';
+                wishlist.innerHTML = '<div class="no-books">Nie masz jeszcze Å¼adnych ksiÄ…Å¼ek na liÅ›cie. Dodaj swojÄ… pierwszÄ… ksiÄ…Å¼kÄ™!</div>';
                 return;
             }
             
-            // Dodaj ka¿d¹ ksi¹¿kê do pó³ki
+            // Dodaj kaÅ¼dÄ… ksiÄ…Å¼kÄ™ do pÃ³Å‚ki
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
@@ -37,11 +37,11 @@ async function loadUserWishlist(containerId = 'wishlist') {
             });
         } else {
             const errorData = await response.json();
-            wishlist.innerHTML = `<div class="error-message">B³¹d: ${errorData.error || 'Nie mo¿na za³adowaæ ksi¹¿ek'}</div>`;
+            wishlist.innerHTML = `<div class="error-message">BÅ‚Ä…d: ${errorData.error || 'Nie moÅ¼na zaÅ‚adowaÄ‡ ksiÄ…Å¼ek'}</div>`;
         }
     } catch (error) {
-        console.error('B³¹d podczas pobierania ksi¹¿ek:', error);
-        wishlist.innerHTML = '<div class="error-message">Problem z po³¹czeniem z serwerem</div>';
+        console.error('BÅ‚Ä…d podczas pobierania ksiÄ…Å¼ek:', error);
+        wishlist.innerHTML = '<div class="error-message">Problem z poÅ‚Ä…czeniem z serwerem</div>';
     }
 }
 
