@@ -103,6 +103,11 @@ async function loadAllBooks(containerId = 'allBookshelf') {
                     profileButtonHtml = `<button class="profile-button" onclick="location.href='/profilePage.html?userId=${encodeURIComponent(book.owner_username)}'">Profil właściciela</button>`;
                 }
 
+                let tradeButtonHtml = '';
+                if (book.owner_username && book.owner_username !== currentUsername) {
+                    tradeButtonHtml = `<button class="profile-button" onclick="location.href='/tradeView.html?userId=${encodeURIComponent(book.owner_username)}'">Wymiana</button>`;
+                }
+
                 bookCard.innerHTML = `
                     <div class="book-title">${escapeHtml(book.title)}</div>
                     <div class="book-author">${escapeHtml(book.author)}</div>
@@ -111,6 +116,7 @@ async function loadAllBooks(containerId = 'allBookshelf') {
                         <div>Okładka: ${escapeHtml(book.cover_type || 'Nie podano')}</div>
                     </div>
                     ${profileButtonHtml}
+                    ${tradeButtonHtml}
                 `;
                 allBookshelf.appendChild(bookCard);
             });

@@ -32,9 +32,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: white;
-    border-radius: 10px;
+    padding: 10px 10px;
+    background-color: #3498db;
+    border-radius: 0px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
@@ -45,12 +45,12 @@ body {
 }
 
 .logo-image {
-    height: 40px;
+    height: 100px;
     margin-right: 10px;
 }
 
 .app-name {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
     color: #2c3e50;
 }
@@ -138,6 +138,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    margin-top: 15px;
 }
 
 button:hover {

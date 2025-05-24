@@ -4,7 +4,7 @@
 function initAddBookModal() {
     const modal = document.getElementById('addBookModal');
     const btn = document.getElementById('addBookBtn');
-    const closeBtn = document.querySelector('.close');
+    const closeBtn = document.querySelector('.close-books');
     const form = document.getElementById('addBookForm');
 
     // Inicjalizuj podpowiedzi książek od razu
@@ -94,7 +94,7 @@ function initAddBookModal() {
 function initAddWishlistModal() {
     const modal = document.getElementById('addWishlistModal');
     const btn = document.getElementById('addWishlistBtn');
-    const closeBtn = document.querySelector('.close');
+    const closeBtn = document.querySelector('.close-wishlist');
     const form = document.getElementById('addWishlistForm');
 
     // Inicjalizuj podpowiedzi książek od razu
@@ -129,91 +129,6 @@ function initAddWishlistModal() {
             const wishlistData = {
                 title: document.getElementById('titleW').value,
                 author: document.getElementById('authorW').value,
-                condition: document.getElementById('conditionW').value,
-                cover_type: document.getElementById('cover_typeW').value
-            };
-
-            try {
-                const response = await callApi('/api/user/wishlists', {
-                    method: 'POST',
-                    body: JSON.stringify(wishlistData)
-                });
-
-                if (response.ok) {
-                    // Zamknij modal
-                    modal.style.display = 'none';
-
-                    // Wyczyść formularz
-                    form.reset();
-
-                    // Ukryj wszystkie podpowiedzi po resecie
-                    const titleSuggestions = document.getElementById('titleSuggestions');
-                    const authorSuggestions = document.getElementById('authorSuggestions');
-                    if (titleSuggestions) titleSuggestions.classList.remove('show');
-                    if (authorSuggestions) authorSuggestions.classList.remove('show');
-
-                    // Odśwież listę książek - sprawdź czy istnieje funkcja i wywołaj ją
-                    if (typeof loadUserWishlist === 'function') {
-                        loadUserWishlist();
-                    }
-
-                    // Sprawdź czy istnieje druga półka (na profilu) i też ją odśwież
-                    if (document.getElementById('userWishlist') && typeof loadUserWishlist === 'function') {
-                        loadUserWishlist('userWishlist');
-                    }
-
-                    alert('Książka została dodana do Twojej półki!');
-                } else {
-                    const errorData = await response.json();
-                    alert(errorData.error || 'Wystąpił błąd podczas dodawania książki.');
-                }
-            } catch (error) {
-                console.error('Błąd podczas dodawania książki:', error);
-                alert('Problem z połączeniem z serwerem.');
-            }
-        });
-    }
-}// Funkcja do inicjalizacji modalu
-function initAddWishlistModal() {
-    const modal = document.getElementById('addWishlistModal');
-    const btn = document.getElementById('addWishlistBtn');
-    const closeBtn = document.querySelector('.close');
-    const form = document.getElementById('addWishlistForm');
-
-    // Inicjalizuj podpowiedzi książek od razu
-    initBookSuggestions();
-
-    // Otwieranie modalu
-    if (btn) {
-        btn.addEventListener('click', () => {
-            modal.style.display = 'block';
-        });
-    }
-
-    // Zamykanie modalu
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-    }
-
-    // Zamykanie modalu po kliknięciu poza jego obszarem
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    // Obsługa formularza dodawania książki
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const wishlistData = {
-                title: document.getElementById('titleW').value,
-                author: document.getElementById('authorW').value,
-                condition: document.getElementById('conditionW').value,
-                cover_type: document.getElementById('cover_typeW').value
             };
 
             try {

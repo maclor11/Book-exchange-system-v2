@@ -22,7 +22,7 @@
     position: relative;
 }
 
-.close {
+.close-books {
     position: absolute;
     top: 15px;
     right: 20px;
@@ -35,7 +35,24 @@
     padding: 0;
 }
 
-.close:hover {
+.close-wishlist {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+    background: none;
+    border: none;
+    width: auto;
+    padding: 0;
+}
+
+.close-books:hover {
+    color: #34495e;
+}
+
+.close-wishlist:hover {
     color: #34495e;
 }
 
