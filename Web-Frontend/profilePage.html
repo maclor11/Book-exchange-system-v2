@@ -152,12 +152,13 @@
             <div class="profile-content">
                 <!-- Sekcja zdjęcia profilowego -->
                 <div class="profile-image-section">
+                    <h3 class="username-display"></h3>
                     <h1 class="h1Edit">Zdjęcie Profilowe</h1>
                     <img class="imgBorder" id="profileImage"
                          src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg"
                          alt="Zdjęcie profilowe">
                     <div class="action-buttons">
-                        <button class="primary" onclick="showPhotoPanel()">Zmień zdjęcie</button>
+                        <button id="photoEditBtn" class="primary" onclick="showPhotoPanel()">Zmień zdjęcie</button>
                     </div>
                 </div>
 
@@ -167,15 +168,15 @@
                     <div class="user-data-section">
                         <div class="data-row">
                             <span class="data-label">Login:</span>
-                            <span class="data-value" id="login">Ładowanie...</span>
+                            <span class="username-display">Ładowanie...</span>
                             <button class="action-buttons edit" onclick="showPanel('login')">Zmień</button>
                         </div>
                     </div>
 
                     <!-- Akcje konta -->
                     <div class="action-buttons">
-                        <button class="primary" onclick="showPanel('haslo')">Zmień hasło</button>
-                        <button class="danger">Usuń konto</button>
+                        <button id="editLoginBtn" class="primary" onclick="showPanel('haslo')">Zmień hasło</button>
+                        <button id="AccountBtn" class="danger">Usuń konto</button>
                         <button class="admin admin-only" id="adminPanelBtn" style="display: none;" onclick="goToAdminPanel()">Panel Administratora</button>
                     </div>
                 </div>
@@ -183,7 +184,7 @@
 
             <!-- Sekcja książek użytkownika -->
             <div class="user-books-section">
-                <h2>Twoja półka z książkami</h2>
+                <h2 id="ShelfName">Twoja półka z książkami</h2>
 
                 <div class="add-book-section">
                     <button id="addBookBtn" class="add-book-button">Dodaj nową książkę</button>
@@ -194,26 +195,27 @@
                     <div class="loading-books">Ładowanie Twoich książek...</div>
                 </div>
             </div>
+        </div>
 
-            <div class="user-wishlist-section">
-                <h2>Twoja lista życzeń</h2>
+        <div id ="wishlistsection" class="user-wishlist-section">
+            <h2 id="h2">Twoja lista życzeń</h2>
 
-                <div class="add-wishlist-section">
-                    <button id="addWishlistBtn" class="add-wishlist-button">Dodaj nową książkę do listy</button>
-                </div>
+            <div id ="sectionwishlist" class="add-wishlist-section">
+                <button id="addWishlistBtn" class="add-wishlist-button">Dodaj nową książkę do listy</button>
+            </div>
 
-                <div id="userWishlist" class="wishlist">
-                    <!-- Tu będą wyświetlane książki użytkownika -->
-                    <div class="loading-wishlists">Ładowanie Twoich książek...</div>
-                </div>
+            <div id="userWishlist" class="wishlist">
+                <!-- Tu będą wyświetlane książki użytkownika -->
+                <div class="loading-wishlists">Ładowanie Twoich książek...</div>
             </div>
         </div>
+    </div>
 
-        <!-- Sekcja dla niezalogowanych użytkowników -->
-        <div class="logged-out">
-            <p>Zaloguj się aby uzyskać dostęp do profilu</p>
-            <a href="/login.html" class="nav-button">Zaloguj się</a>
-        </div>
+    <!-- Sekcja dla niezalogowanych użytkowników -->
+    <div class="logged-out">
+        <p>Zaloguj się aby uzyskać dostęp do profilu</p>
+        <a href="/login.html" class="nav-button">Zaloguj się</a>
+    </div>
     </div>
 </body>
 </html>

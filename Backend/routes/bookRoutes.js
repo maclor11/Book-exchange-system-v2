@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { getUserBooks, addBookToShelf, removeBookFromShelf,  } = require('../controllers/bookController');
+
+const {
+    getUserBooks,
+    addBookToShelf,
+    removeBookFromShelf,
+    getBooksByUsername
+} = require('../controllers/bookController');
+
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Wszystkie trasy wymagają uwierzytelnienia
 router.use(authMiddleware);
 
-// Pobierz wszystkie książki użytkownika
+// Pobierz wszystkie książki zalogowanego użytkownika
 router.get('/books', getUserBooks);
+
+// Pobierz książki dowolnego użytkownika po userId
+router.get('/books/:userId', getBooksByUsername);
 
 // Dodaj książkę do półki użytkownika
 router.post('/books', addBookToShelf);

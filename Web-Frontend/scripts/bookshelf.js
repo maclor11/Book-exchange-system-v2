@@ -1,31 +1,36 @@
 // bookshelf.js - Obsługa wyświetlania półek z książkami
 
 // Funkcja do pobierania książek użytkownika
-async function loadUserBooks(containerId = 'bookshelf') {
+async function loadUserBooks(containerId = 'bookshelf', userId = null) {
     const bookshelf = document.getElementById(containerId);
-    
     if (!bookshelf) return;
-    
-    // Wyświetl komunikat o ładowaniu
-    bookshelf.innerHTML = '<div class="loading-books">Ładowanie Twoich książek...</div>';
-    
+
+    bookshelf.innerHTML = '<div class="loading-books">Ładowanie książek...</div>';
+
     try {
-        const response = await callApi('/api/user/books', {
-            method: 'GET'
+        let url = '/api/user/books';  // domyślny endpoint dla własnych książek
+        if (userId) {
+            url = `/api/user/books/${encodeURIComponent(userId)}`; // książki innego użytkownika
+        }
+
+        const token = localStorage.getItem('token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: headers
         });
-        
+
         if (response.ok) {
             const books = await response.json();
-            
-            // Wyczyść półkę
             bookshelf.innerHTML = '';
-            
+
             if (books.length === 0) {
-                bookshelf.innerHTML = '<div class="no-books">Nie masz jeszcze żadnych książek. Dodaj swoją pierwszą książkę!</div>';
+                bookshelf.innerHTML = '<div class="no-books">Brak książek do wyświetlenia.</div>';
                 return;
             }
-            
-            // Dodaj każdą książkę do półki
+
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
@@ -50,36 +55,54 @@ async function loadUserBooks(containerId = 'bookshelf') {
     }
 }
 
-// Function to load all books for display to any user (logged in or not)
 async function loadAllBooks(containerId = 'allBookshelf') {
     const allBookshelf = document.getElementById(containerId);
-    
     if (!allBookshelf) return;
-    
-    // Display loading message
+
     allBookshelf.innerHTML = '<div class="loading-books">Ładowanie wszystkich książek...</div>';
-    
+
     try {
-        // Use direct fetch with public API endpoint that doesn't require authentication
+        let currentUsername = null;
+
+        // Pobierz dane aktualnie zalogowanego użytkownika (jeśli istnieje)
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const userResponse = await fetch('/api/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    currentUsername = userData.username;
+                }
+            } catch (e) {
+                console.warn('Nie udało się pobrać danych użytkownika:', e);
+            }
+        }
+
+        // Teraz pobierz wszystkie książki
         const response = await fetch('/api/public/books', {
             method: 'GET'
         });
-        
+
         if (response.ok) {
             const books = await response.json();
-            
-            // Clear the bookshelf
             allBookshelf.innerHTML = '';
-            
+
             if (books.length === 0) {
                 allBookshelf.innerHTML = '<div class="no-books">Brak dostępnych książek w systemie.</div>';
                 return;
             }
-            
-            // Add each book to the bookshelf
+
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
+
+                let profileButtonHtml = '';
+                if (book.owner_username && book.owner_username !== currentUsername) {
+                    profileButtonHtml = `<button class="profile-button" onclick="location.href='/profilePage.html?userId=${encodeURIComponent(book.owner_username)}'">Profil właściciela</button>`;
+                }
+
                 bookCard.innerHTML = `
                     <div class="book-title">${escapeHtml(book.title)}</div>
                     <div class="book-author">${escapeHtml(book.author)}</div>
@@ -87,6 +110,7 @@ async function loadAllBooks(containerId = 'allBookshelf') {
                         <div>Stan: ${escapeHtml(book.condition || 'Nie podano')}</div>
                         <div>Okładka: ${escapeHtml(book.cover_type || 'Nie podano')}</div>
                     </div>
+                    ${profileButtonHtml}
                 `;
                 allBookshelf.appendChild(bookCard);
             });
