@@ -1,21 +1,25 @@
 // books.js - Główny skrypt obsługi książek dla strony głównej
 document.addEventListener('DOMContentLoaded', () => {
-    // Ładuj wszystkie książki dla każdego użytkownika (zalogowanego i niezalogowanego)
-    loadAllBooks();
-    
-    // Sprawdzamy, czy użytkownik jest zalogowany
+    loadAllBooks();  // jeśli masz, ładuje wszystkie książki na stronie głównej
+
     const token = localStorage.getItem('token');
     if (token) {
-        // Inicjalizacja modalu do dodawania książek
         initAddBookModal();
-
-        // Inicjalizacja modelu do dodawania ksiazek do listy zyczen
         initAddWishlistModal();
-        
-        // Pobierz książki po załadowaniu strony
-        loadUserBooks();
-
-        // Pobierz listę życzeń po załadowaniu strony
         loadUserWishlist();
+        // Ładuj półkę zalogowanego użytkownika do domyślnego kontenera
+        loadUserBooks('bookshelf');
+    }
+
+    // Sprawdź, czy jest kontener na półkę innego użytkownika (np. profil)
+    const profileBookshelf = document.getElementById('userBookshelf');
+    if (profileBookshelf) {
+        // Pobierz userId (username) z URL
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('userId');
+        if (userId) {
+            // Załaduj książki innego użytkownika do kontenera na profilu
+            loadUserBooks('userBookshelf', userId);
+        }
     }
 });

@@ -9,14 +9,14 @@ const UPLOADS_PATH = process.env.UPLOADS_PATH || path.join(__dirname, '../../upl
 
 // Konfiguracja multer dla przesyłania plików
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         const uploadDir = path.join(UPLOADS_PATH, 'profile-pictures');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
         cb(null, uploadDir);
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, req.user.userId + '-' + uniqueSuffix + path.extname(file.originalname));
     }
@@ -27,11 +27,11 @@ const upload = multer({
     limits: {
         fileSize: 5 * 1024 * 1024 // 5MB limit
     },
-    fileFilter: function(req, file, cb) {
+    fileFilter: function (req, file, cb) {
         const allowedTypes = /jpeg|jpg|png|gif/;
         const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = allowedTypes.test(file.mimetype);
-        
+
         if (mimetype && extname) {
             return cb(null, true);
         } else {
@@ -43,8 +43,25 @@ const upload = multer({
 exports.getCurrentUserLogin = async (req, res) => {
     try {
         const user = await User.findById(req.user.userId).select('username');
-        res.json({login: user.username });
+        res.json({ login: user.username });
     } catch (error) {
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
+};
+
+exports.getUserProfileById = async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await User.findOne({ username: userId }).select('username');
+
+        if (!user) {
+            return res.status(404).json({ error: 'Użytkownik nie znaleziony' });
+        }
+
+        res.json({ login: user.username });
+    } catch (error) {
+        console.error('Błąd podczas pobierania profilu użytkownika:', error);
         res.status(500).json({ error: 'Błąd serwera' });
     }
 };
@@ -54,6 +71,23 @@ exports.getCurrentUserProfilePicture = async (req, res) => {
         const user = await User.findById(req.user.userId).select('profilePicturePath');
         res.json({ profilePicturePath: user.profilePicturePath });
     } catch (error) {
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
+};
+
+exports.getUserProfilePictureById = async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await User.findOne({ username: userId }).select('profilePicturePath');
+
+        if (!user || !user.profilePicturePath) {
+            return res.status(404).json({ error: 'Zdjęcie profilowe nie znalezione' });
+        }
+
+        res.json({ profilePicturePath: user.profilePicturePath });
+    } catch (error) {
+        console.error('Błąd podczas pobierania zdjęcia profilowego:', error);
         res.status(500).json({ error: 'Błąd serwera' });
     }
 };
@@ -110,9 +144,9 @@ exports.updateCurrentUserProfilePicture = [
                 { new: true }
             ).select('profilePicturePath');
 
-            res.json({ 
-                message: 'Zdjęcie profilowe zaktualizowane', 
-                profilePicturePath: updatedUser.profilePicturePath 
+            res.json({
+                message: 'Zdjęcie profilowe zaktualizowane',
+                profilePicturePath: updatedUser.profilePicturePath
             });
         } catch (error) {
             console.error('Błąd przy aktualizacji zdjęcia profilowego:', error);
