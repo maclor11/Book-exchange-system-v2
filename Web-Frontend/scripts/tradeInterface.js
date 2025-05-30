@@ -289,10 +289,10 @@ async function submitTrade() {
     
     const partnerUsername = document.getElementById('partnerUserName').textContent;
     
-    if (selectedMyBooks.length === 0 || selectedPartnerBooks.length === 0) {
-		alert('Musisz wybrać przynajmniej jedną książkę z każdej strony do wymiany');
-		return;
-	}
+    if (selectedMyBooks.length === 0 && selectedPartnerBooks.length === 0) {
+        alert('Musisz wybrać przynajmniej jedną książkę do wymiany');
+        return;
+    }
     
     try {
         const response = await callApi('/api/user/trades', {

@@ -378,7 +378,13 @@ async function submitTradeModification(tradeId, isInitiator) {
     const selectedPartnerBooks = Array.from(document.querySelectorAll('#selectedPartnerBooks .selected-book-item'))
         .map(book => book.dataset.bookId);
     
-    // POPRAWKA: Określ które książki należą do user1 a które do user2 na podstawie tego, czy jesteśmy inicjatorem
+    // Sprawdź czy wybrano przynajmniej jedną książkę
+    if (selectedMyBooks.length === 0 && selectedPartnerBooks.length === 0) {
+        alert('Musisz wybrać przynajmniej jedną książkę do wymiany');
+        return;
+    }
+    
+    // Określ które książki należą do user1 a które do user2 na podstawie tego, czy jesteśmy inicjatorem
     let user1_books, user2_books;
     
     if (isInitiator) {

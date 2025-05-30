@@ -66,29 +66,35 @@ exports.createTrade = async (req, res) => {
             return res.status(400).json({ error: 'Nie mo¿esz utworzyæ wymiany sam ze sob¹' });
         }
 
-        // SprawdŸ czy wszystkie ksi¹¿ki u¿ytkownika 1 nale¿¹ do niego
-        if (user1_books && user1_books.length > 0) {
-            const user1BookCheck = await UserBook.find({
-                user_id: user1_id,
-                book_id: { $in: user1_books }
-            });
-            
-            if (user1BookCheck.length !== user1_books.length) {
-                return res.status(400).json({ error: 'Niektóre z wybranych ksi¹¿ek nie nale¿¹ do Ciebie' });
-            }
-        }
+        // SprawdŸ czy wszystkie ksi¹¿ki u¿ytkownika 1 nale¿¹ do niego (tylko jeœli s¹ wybrane)
+		if (user1_books && user1_books.length > 0) {
+			const user1BookCheck = await UserBook.find({
+				user_id: user1_id,
+				book_id: { $in: user1_books }
+			});
+			
+			if (user1BookCheck.length !== user1_books.length) {
+				return res.status(400).json({ error: 'Niektóre z wybranych ksi¹¿ek nie nale¿¹ do Ciebie' });
+			}
+		}
 
-        // SprawdŸ czy wszystkie ksi¹¿ki u¿ytkownika 2 nale¿¹ do niego
-        if (user2_books && user2_books.length > 0) {
-            const user2BookCheck = await UserBook.find({
-                user_id: user2._id,
-                book_id: { $in: user2_books }
-            });
-            
-            if (user2BookCheck.length !== user2_books.length) {
-                return res.status(400).json({ error: 'Niektóre z wybranych ksi¹¿ek nie nale¿¹ do drugiego u¿ytkownika' });
-            }
-        }
+		// SprawdŸ czy wszystkie ksi¹¿ki u¿ytkownika 2 nale¿¹ do niego (tylko jeœli s¹ wybrane)
+		if (user2_books && user2_books.length > 0) {
+			const user2BookCheck = await UserBook.find({
+				user_id: user2._id,
+				book_id: { $in: user2_books }
+			});
+			
+			if (user2BookCheck.length !== user2_books.length) {
+				return res.status(400).json({ error: 'Niektóre z wybranych ksi¹¿ek nie nale¿¹ do drugiego u¿ytkownika' });
+			}
+		}
+
+		// SprawdŸ czy przynajmniej jedna strona ma ksi¹¿ki
+		const totalBooks = (user1_books ? user1_books.length : 0) + (user2_books ? user2_books.length : 0);
+		if (totalBooks === 0) {
+			return res.status(400).json({ error: 'Wymiana musi zawieraæ przynajmniej jedn¹ ksi¹¿kê' });
+		}
 
         // Utwórz now¹ wymianê
         const trade = new Trade({
@@ -329,28 +335,34 @@ exports.modifyTrade = async (req, res) => {
         // Okreœl kto jest user1 a kto user2 w kontekœcie aktualnej sesji
         const isCurrentUserUser1 = trade.user1_id.toString() === userId;
         
-        // SprawdŸ prawid³owoœæ ksi¹¿ek - u¿ytkownik mo¿e modyfikowaæ tylko swoje ksi¹¿ki
-        if (user1_books && user1_books.length > 0) {
-            const user1BookCheck = await UserBook.find({
-                user_id: trade.user1_id,
-                book_id: { $in: user1_books }
-            });
-            
-            if (user1BookCheck.length !== user1_books.length) {
-                return res.status(400).json({ error: 'Niektóre ksi¹¿ki nie nale¿¹ do pierwszego u¿ytkownika' });
-            }
-        }
+       // SprawdŸ prawid³owoœæ ksi¹¿ek - tylko jeœli s¹ wybrane
+		if (user1_books && user1_books.length > 0) {
+			const user1BookCheck = await UserBook.find({
+				user_id: trade.user1_id,
+				book_id: { $in: user1_books }
+			});
+			
+			if (user1BookCheck.length !== user1_books.length) {
+				return res.status(400).json({ error: 'Niektóre ksi¹¿ki nie nale¿¹ do pierwszego u¿ytkownika' });
+			}
+		}
 
-        if (user2_books && user2_books.length > 0) {
-            const user2BookCheck = await UserBook.find({
-                user_id: trade.user2_id,
-                book_id: { $in: user2_books }
-            });
-            
-            if (user2BookCheck.length !== user2_books.length) {
-                return res.status(400).json({ error: 'Niektóre ksi¹¿ki nie nale¿¹ do drugiego u¿ytkownika' });
-            }
-        }
+		if (user2_books && user2_books.length > 0) {
+			const user2BookCheck = await UserBook.find({
+				user_id: trade.user2_id,
+				book_id: { $in: user2_books }
+			});
+			
+			if (user2BookCheck.length !== user2_books.length) {
+				return res.status(400).json({ error: 'Niektóre ksi¹¿ki nie nale¿¹ do drugiego u¿ytkownika' });
+			}
+		}
+
+		// SprawdŸ czy przynajmniej jedna strona ma ksi¹¿ki
+		const totalBooks = (user1_books ? user1_books.length : 0) + (user2_books ? user2_books.length : 0);
+		if (totalBooks === 0) {
+			return res.status(400).json({ error: 'Wymiana musi zawieraæ przynajmniej jedn¹ ksi¹¿kê' });
+		}
 
         // Jeœli wymiana by³a zaakceptowana, odblokuj ksi¹¿ki
         if (trade.status === 'accepted') {
