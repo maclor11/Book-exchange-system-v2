@@ -42,6 +42,9 @@
     padding: 15px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .book-card:hover {
@@ -64,10 +67,61 @@
 .book-details {
     font-size: 12px;
     color: #95a5a6;
+    flex-grow: 1;
 }
 
 .book-details div {
     margin-bottom: 2px;
+}
+
+.book-actions {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.profile-button,
+.trade-button {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 0 !important;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+    box-sizing: border-box;
+    display: block;
+    line-height: 1.2;
+}
+
+.profile-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.profile-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.trade-button {
+    background-color: #e67e22;
+    color: white;
+}
+
+.trade-button:hover {
+    background-color: #d35400;
+    transform: translateY(-1px);
+}
+
+.profile-button:active,
+.trade-button:active {
+    transform: translateY(0);
 }
 
 .loading-books {
@@ -111,4 +165,53 @@
 
 .bookshelf.compact .book-details {
     font-size: 11px;
+}
+
+.bookshelf.compact .book-actions {
+    margin-top: 10px;
+    gap: 6px;
+}
+
+.bookshelf.compact .profile-button,
+.bookshelf.compact .trade-button {
+    padding: 6px 10px;
+    margin: 0 !important;
+    font-size: 12px;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .bookshelf {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .book-card {
+        padding: 12px;
+    }
+    
+    .book-title {
+        font-size: 14px;
+    }
+    
+    .book-author {
+        font-size: 13px;
+    }
+    
+    .book-details {
+        font-size: 11px;
+    }
+    
+    .profile-button,
+    .trade-button {
+        padding: 6px 10px;
+        margin: 0 !important;
+        font-size: 12px;
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+    }
 }
