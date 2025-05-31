@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Profil użytkownika</title>
     <!-- Style ogólne -->
@@ -18,7 +19,9 @@
     <script src="/scripts/bookModal.js"></script>
     <script src="/scripts/profilePage.js"></script>
     <script src="/scripts/wishlist.js"></script>
+    <script src="/scripts/ratings.js"></script>
 </head>
+
 <body class="full-width-container">
     <!-- Navbar -->
     <div class="navbar">
@@ -137,8 +140,8 @@
                     <h3 class="username-display"></h3>
                     <h1 class="h1Edit">Zdjęcie Profilowe</h1>
                     <img class="imgBorder" id="profileImage"
-                         src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg"
-                         alt="Zdjęcie profilowe">
+                        src="https://as2.ftcdn.net/v2/jpg/01/67/89/19/1000_F_167891932_sEnDfidqP5OczKJpkZso3mpbTqEFsrja.jpg"
+                        alt="Zdjęcie profilowe">
                     <div class="action-buttons">
                         <button id="photoEditBtn" class="primary" onclick="showPhotoPanel()">Zmień zdjęcie</button>
                     </div>
@@ -159,7 +162,8 @@
                     <div class="action-buttons">
                         <button id="editLoginBtn" class="primary" onclick="showPanel('haslo')">Zmień hasło</button>
                         <button id="AccountBtn" class="danger">Usuń konto</button>
-                        <button class="admin admin-only" id="adminPanelBtn" style="display: none;" onclick="goToAdminPanel()">Panel Administratora</button>
+                        <button class="admin admin-only" id="adminPanelBtn" style="display: none;"
+                            onclick="goToAdminPanel()">Panel Administratora</button>
                     </div>
                 </div>
             </div>
@@ -179,10 +183,10 @@
             </div>
         </div>
 
-        <div id ="wishlistsection" class="user-wishlist-section">
+        <div id="wishlistsection" class="user-wishlist-section">
             <h2 id="h2">Twoja lista życzeń</h2>
 
-            <div id ="sectionwishlist" class="add-wishlist-section">
+            <div id="sectionwishlist" class="add-wishlist-section">
                 <button id="addWishlistBtn" class="add-wishlist-button">Dodaj nową książkę do listy</button>
             </div>
 
@@ -191,6 +195,14 @@
                 <div class="loading-wishlists">Ładowanie Twoich książek...</div>
             </div>
         </div>
+
+        <div id="ratingsSection" class="user-ratings-section logged-in" style="display: none; margin-top: 40px;">
+            <h2>Twoje oceny</h2>
+            <div id="ratingsList">
+                <p>Ładowanie ocen...</p>
+            </div>
+        </div>
+
     </div>
 
     <!-- Sekcja dla niezalogowanych użytkowników -->
@@ -200,4 +212,5 @@
     </div>
     </div>
 </body>
+
 </html>

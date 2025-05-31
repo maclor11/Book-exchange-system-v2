@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const OpinionSchema = new mongoose.Schema({
+const RatingSchema = new mongoose.Schema({
     user_id: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
@@ -9,7 +9,7 @@ const OpinionSchema = new mongoose.Schema({
     trade_id: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Trade',
-        required: true
+        required: false  // TODO: change to true once Trades have been added
     },
     message: { 
         type: String 
@@ -19,6 +19,6 @@ const OpinionSchema = new mongoose.Schema({
         min: 1,
         max: 5
     }
-});
+}, {timestamps: true});
 
-module.exports = mongoose.model('Opinion', OpinionSchema);
+module.exports = mongoose.model('Rating', RatingSchema);

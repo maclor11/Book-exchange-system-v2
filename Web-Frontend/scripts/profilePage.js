@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
          
                     document.querySelector(`.user-wishlist-section`).style.display = 'none';
 
-
+                    console.log("user data from profilePage.js: " + userData.params);
                 }
             }
         } catch (error) {
@@ -115,6 +115,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const ownerUserId = getUserIdFromUrl();
+
+    
 
     if (ownerUserId) {
         await loadOwnerProfile(ownerUserId, token);
@@ -129,6 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAddWishlistModal();
     loadUserBooks('userBookshelf', ownerUserId);
     loadUserWishlist('userWishlist');
+    loadUserRatings(ownerUserId);
+
 });
 
 function showPanel(type) {
@@ -399,3 +403,5 @@ function open_mainpage() {
 function goToAdminPanel() {
     window.location.href = '/adminPanel.html';
 }
+
+

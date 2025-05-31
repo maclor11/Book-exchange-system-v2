@@ -33,6 +33,8 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/user', require('./routes/bookRoutes')); 
 app.use('/api/user', require('./routes/wishlistRoutes')); 
+app.use('/api/user', require('./routes/ratingRoutes')); 
+
 
 
 
