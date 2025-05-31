@@ -7,6 +7,7 @@ exports.getUserBooks = async (req, res) => {
         // Znajdź wszystkie powiązania użytkownik-książka dla danego użytkownika
         const userBooks = await UserBook.find({ user_id: req.user.userId })
             .populate('book_id')
+            .populate('locked_by_trade')
             .sort({ owned_date: -1 });
 
         // Przygotuj dane do zwrócenia
@@ -17,7 +18,9 @@ exports.getUserBooks = async (req, res) => {
                 author: userBook.book_id.author,
                 condition: userBook.book_id.condition,
                 cover_type: userBook.book_id.cover_type,
-                owned_date: userBook.owned_date
+                owned_date: userBook.owned_date,
+                is_locked: !!userBook.locked_by_trade,
+                locked_by_trade_id: userBook.locked_by_trade
             };
         });
 
@@ -40,6 +43,7 @@ exports.getBooksByUsername = async (req, res) => {
 
         const userBooks = await UserBook.find({ user_id: user._id })
             .populate('book_id')
+            .populate('locked_by_trade')
             .sort({ owned_date: -1 });
 
         const books = userBooks.map(userBook => ({
@@ -49,6 +53,8 @@ exports.getBooksByUsername = async (req, res) => {
             condition: userBook.book_id.condition,
             cover_type: userBook.book_id.cover_type,
             owned_date: userBook.owned_date,
+            is_locked: !!userBook.locked_by_trade,
+            locked_by_trade_id: userBook.locked_by_trade
         }));
 
         res.json(books);
