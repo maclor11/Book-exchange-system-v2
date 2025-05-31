@@ -100,6 +100,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const addBookBtn = document.getElementById('addBookBtn');
                     if (addBookBtn) addBookBtn.style.display = 'none';
+					
+					const tradesSection = document.querySelector('.user-trades-section');
+					if (tradesSection) tradesSection.style.display = 'none';
 
                     ShelfName.textContent = `Półka z książkami użytkownika`;
 
@@ -129,6 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAddWishlistModal();
     loadUserBooks('userBookshelf', ownerUserId);
     loadUserWishlist('userWishlist');
+	loadUserTrades();
 });
 
 function showPanel(type) {

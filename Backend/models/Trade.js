@@ -13,12 +13,29 @@ const TradeSchema = new mongoose.Schema({
     },
     status: { 
         type: String, 
-        enum: ['pending', 'accepted', 'rejected', 'completed'],
+        enum: ['pending', 'accepted', 'rejected', 'completed', 'cancelled'],
         default: 'pending'
     },
     reviewed: { 
         type: Boolean, 
         default: false 
+    },
+    pending_user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    user1_confirmed_completion: {
+        type: Boolean,
+        default: false
+    },
+    user2_confirmed_completion: {
+        type: Boolean,
+        default: false
+    },
+    completion_date: {
+        type: Date,
+        default: null
     }
 });
 

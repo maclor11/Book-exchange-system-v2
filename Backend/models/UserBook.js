@@ -14,6 +14,11 @@ const UserBookSchema = new mongoose.Schema({
     owned_date: { 
         type: Date, 
         default: Date.now 
+    },
+	locked_by_trade: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Trade',
+        default: null
     }
 });
 
