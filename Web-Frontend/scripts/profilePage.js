@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const loginRes = await response.json();
             updateAllUsernameDisplays(loginRes.login);
+            
 
         } catch (error) {
             console.error('Błąd pobierania loginu:', error);
@@ -108,8 +109,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
          
                     document.querySelector(`.user-wishlist-section`).style.display = 'none';
-
-
                 }
             }
         } catch (error) {
@@ -118,6 +117,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const ownerUserId = getUserIdFromUrl();
+
+    
 
     if (ownerUserId) {
         await loadOwnerProfile(ownerUserId, token);
@@ -133,6 +134,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadUserBooks('userBookshelf', ownerUserId);
     loadUserWishlist('userWishlist');
 	loadUserTrades();
+
+    loadUserRatings(ownerUserId);
 });
 
 function showPanel(type) {
@@ -403,3 +406,5 @@ function open_mainpage() {
 function goToAdminPanel() {
     window.location.href = '/adminPanel.html';
 }
+
+

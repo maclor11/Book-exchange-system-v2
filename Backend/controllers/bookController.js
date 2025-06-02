@@ -1,6 +1,9 @@
 const Book = require('../models/Book');
 const UserBook = require('../models/UserBook');
 const User = require('../models/User');
+
+const logToFile = require('../utils/logger');
+
 // Pobierz wszystkie książki użytkownika
 exports.getUserBooks = async (req, res) => {
     try {
@@ -56,7 +59,6 @@ exports.getBooksByUsername = async (req, res) => {
             is_locked: !!userBook.locked_by_trade,
             locked_by_trade_id: userBook.locked_by_trade
         }));
-
         res.json(books);
     } catch (error) {
         console.error('Błąd podczas pobierania książek użytkownika:', error);

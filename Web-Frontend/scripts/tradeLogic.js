@@ -142,6 +142,9 @@ function getStatusClass(status) {
 // Funkcja zwracająca dostępne akcje dla wymiany
 function getTradeActions(trade) {
     const actions = [];
+
+    const isInitiator = trade.isInitiator;
+    const otherUser = isInitiator ? trade.user2 : trade.user1;
     
     // Sprawdź czy wszystkie książki w wymianie są dostępne
     const areAllBooksAvailable = checkTradeBookAvailability(trade);
@@ -183,6 +186,12 @@ function getTradeActions(trade) {
         } else {
             actions.push(`<button onclick="completeTrade('${trade.id}')" class="btn-complete">Potwierdź ukończenie</button>`);
         }
+    }
+    else if(trade.status === 'completed'){
+        actions.push(`<button onclick="openRatingModal('${trade.id}', '${otherUser.id}', '${otherUser.username}')" class="btn-rating">Oceń wymiane</button>`);
+    }
+    else if(trade.status === 'completed'){
+        //TODO: maybe display rating by the trade
     }
     
     // Zawsze można zobaczyć szczegóły
