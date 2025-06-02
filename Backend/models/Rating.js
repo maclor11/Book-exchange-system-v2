@@ -6,19 +6,32 @@ const RatingSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    rated_user_id: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',
+        required: true
+    },
     trade_id: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Trade',
-        required: false  // TODO: change to true once Trades have been added
+        required: true
     },
     message: { 
-        type: String 
+        type: String,
+        maxlength: 500
     },
     stars: { 
         type: Number,
         min: 1,
-        max: 5
+        max: 5,
+        required: true
     }
-}, {timestamps: true});
+});
+
+// Index to prevent duplicate ratings for the same trade by the same user
+RatingSchema.index({ user_id: 1, trade_id: 1 }, { unique: true });
+
+// Index for efficient queries when getting ratings for a specific user
+RatingSchema.index({ rated_user_id: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Rating', RatingSchema);

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const loginRes = await response.json();
             updateAllUsernameDisplays(loginRes.login);
+            
 
         } catch (error) {
             console.error('Błąd pobierania loginu:', error);
@@ -108,8 +109,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
          
                     document.querySelector(`.user-wishlist-section`).style.display = 'none';
-
-                    console.log("user data from profilePage.js: " + userData.params);
                 }
             }
         } catch (error) {
@@ -134,12 +133,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAddWishlistModal();
     loadUserBooks('userBookshelf', ownerUserId);
     loadUserWishlist('userWishlist');
-<<<<<<< HEAD
-    loadUserRatings(ownerUserId);
-
-=======
 	loadUserTrades();
->>>>>>> origin/main
+
+    loadUserRatings(ownerUserId);
 });
 
 function showPanel(type) {
